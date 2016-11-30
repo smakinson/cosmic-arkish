@@ -16,3 +16,14 @@ This is a fun experiment using the Canvas publish target from Animate CC and mix
 ###Things to look into that I didnt think about upfront
 
 * Is it possible to have a Library item that is dragged to the stage use my typescript class directly in the same manner it worked with Actionscript?
+
+
+The intended home for the finished game is on my personal site: http://smakinson.github.io
+
+###Game Play:
+
+####Keyboard Option
+Use the arrow keys to fire at meteors and move the saucer and the spacebar to beam up the aliens.
+
+####Phone or tablet Option
+My intent is to build an app or a webpage that can be used on a phone to control the game on my website. I will fill in the details here once I know what they are.
