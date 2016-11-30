@@ -1,0 +1,48 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Planet Guns" itemID="583e02b9-000004c9" linkageExportForAS="true" linkageClassName="PlanetGuns" lastModified="1480525650">
+  <persistentData>
+    <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
+  </persistentData>
+  <timeline>
+    <DOMTimeline name="Planet Guns">
+      <layers>
+        <DOMLayer name="guns" color="#4F80FF" autoNamed="false">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="planet gun asset" name="leftGun">
+                  <transformationPoint>
+                    <Point x="40.45" y="400"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+                <DOMSymbolInstance libraryItemName="planet gun asset" name="rightGun">
+                  <matrix>
+                    <Matrix a="-1" tx="1280"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="40.45" y="400"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+        <DOMLayer name="laser" color="#9933CC" current="true" isSelected="true" autoNamed="false">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="laser asset" name="laser" selected="true">
+                  <matrix>
+                    <Matrix tx="32" ty="7.05"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="640"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

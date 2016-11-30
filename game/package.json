@@ -1,0 +1,26 @@
+{
+  "name": "game",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "webpack -d --watch",
+    "serve": "webpack-dev-server --content-base ../build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/easeljs": "^0.8.35",
+    "@types/greensock": "^1.15.30",
+    "@types/jquery": "^2.0.34",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^1.2.1",
+    "typescript": "^2.0.10",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "jquery": "^3.1.1"
+  }
+}

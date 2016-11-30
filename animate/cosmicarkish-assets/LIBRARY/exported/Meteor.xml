@@ -1,0 +1,121 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Meteor" itemID="582cb1f9-00000532" linkageExportForAS="true" linkageClassName="Meteor" lastModified="1480363016" lastUniqueIdentifier="1">
+  <persistentData>
+    <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
+  </persistentData>
+  <timeline>
+    <DOMTimeline name="Meteor" currentFrame="7">
+      <layers>
+        <DOMLayer name="scripts" color="#9933CC" locked="true" autoNamed="false">
+          <frames>
+            <DOMFrame index="0" duration="4" keyMode="9728">
+              <Framescript language="JavaScript">
+                <script><![CDATA[this.stop();]]></script>
+              </Framescript>
+              <elements/>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+        <DOMLayer name="meteor" color="#0000FF" current="true" isSelected="true" autoNamed="false">
+          <frames>
+            <DOMFrame index="0" name="right" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor asset">
+                  <matrix>
+                    <Matrix tx="10"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.85" y="47"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="1" name="left" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor asset" centerPoint3DX="-73.3" centerPoint3DY="40.35">
+                  <matrix>
+                    <Matrix a="-1" tx="-11"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.85" y="47"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="2" name="bottom" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor asset" centerPoint3DX="-40.35" centerPoint3DY="72.3">
+                  <matrix>
+                    <Matrix a="0" b="1" c="-1" d="0" ty="10"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.85" y="47"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="3" name="top" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor asset" centerPoint3DX="-40.35" centerPoint3DY="-73.3">
+                  <matrix>
+                    <Matrix a="0" b="-1" c="-1" d="0" ty="-11"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.85" y="47"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="4" name="wiggle_right" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor wiggle asset" centerPoint3DX="72.3" centerPoint3DY="40.35">
+                  <matrix>
+                    <Matrix a="1.00054931640625" d="0.999984741210938" tx="10" ty="0.05"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.8" y="46.9"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="5" name="wiggle_left" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor wiggle asset" centerPoint3DX="-72.3" centerPoint3DY="40.4">
+                  <matrix>
+                    <Matrix a="-1" tx="-10" ty="0.05"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.85" y="47"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="6" name="wiggle_bottom" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor wiggle asset" centerPoint3DX="-40.4" centerPoint3DY="72.3">
+                  <matrix>
+                    <Matrix a="0" b="1" c="-1" d="0" tx="-0.05" ty="10"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.85" y="47"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="7" name="wiggle_top" labelType="name" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="meteor wiggle asset" centerPoint3DX="-40.4" centerPoint3DY="-72.3">
+                  <matrix>
+                    <Matrix a="0" b="-1" c="-1" d="0" tx="-0.05" ty="-10"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="59.85" y="47"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

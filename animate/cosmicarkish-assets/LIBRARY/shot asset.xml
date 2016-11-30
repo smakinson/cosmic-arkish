@@ -1,0 +1,36 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="shot asset" itemID="583310bb-000008fa" lastModified="1479830808">
+  <persistentData>
+    <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
+  </persistentData>
+  <timeline>
+    <DOMTimeline name="shot asset">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMShape selected="true" isFloating="true">
+                  <matrix>
+                    <Matrix a="0.625" d="0.625"/>
+                  </matrix>
+                  <fills>
+                    <FillStyle index="1">
+                      <SolidColor color="#66CCFF"/>
+                    </FillStyle>
+                  </fills>
+                  <edges>
+                    <Edge fillStyle1="1" edges="!0 0S2/3000 24!3000 24/3000 136!3000 136/0 160!0 160|0 0"/>
+                    <Edge cubics="!3000 24(;3000,24 3000,136 3000,136q3000 24p3000 136);"/>
+                    <Edge cubics="!0 160(;0,160 0,0 0,0q0 160 0 0);"/>
+                    <Edge cubics="!3000 136(;3000,136 0,160 0,160q3000 136p0 160);"/>
+                    <Edge cubics="!0 0(;0,0 3000,24 3000,24q0 0p3000 24);"/>
+                  </edges>
+                </DOMShape>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,33 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="saucer beam asset" itemID="583f0afc-0000065f" lastModified="1480527006">
+  <persistentData>
+    <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
+  </persistentData>
+  <timeline>
+    <DOMTimeline name="saucer beam asset">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMShape>
+                  <fills>
+                    <FillStyle index="1">
+                      <SolidColor color="#FFFFFF"/>
+                    </FillStyle>
+                  </fills>
+                  <edges>
+                    <Edge fillStyle1="1" edges="!1101 140/1535 8491!1535 8491/160 8493!160 8493/448 149!448 149[511 124 595 109!595 109[677 94 768 93!768 93[858 92 943 103!943 103[1032 115 1101 140"/>
+                    <Edge cubics="!1101 140(;1101,140 1535,8491 1535,8491q1101 140p1535 8491);"/>
+                    <Edge cubics="!1535 8491(;1535,8491 160,8493 160,8493q1535 8491p160 8493);"/>
+                    <Edge cubics="!160 8493(;160,8493 448,149 448,149q160 8493p448 149);"/>
+                    <Edge cubics="!448 149(;617,79 912,72 1101,140q448 149Q511 124q595 109Q677 94q768 93Q858 92q943 103Q1032 115q1101 140);"/>
+                  </edges>
+                </DOMShape>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

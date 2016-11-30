@@ -1,0 +1,63 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Shot" itemID="58331121-00000900" linkageExportForAS="true" linkageClassName="Shot" lastModified="1480363847" lastUniqueIdentifier="1">
+  <persistentData>
+    <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
+  </persistentData>
+  <timeline>
+    <DOMTimeline name="Shot">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="shot asset">
+                  <matrix>
+                    <Matrix ty="-4"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="20.5" y="4"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="1" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="shot asset" centerPoint3DX="-20.5">
+                  <matrix>
+                    <Matrix a="-1" ty="-4"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="20.5" y="4"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="2" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="shot asset" centerPoint3DY="20.5">
+                  <matrix>
+                    <Matrix a="9.1552734375e-05" b="1" c="-1" d="9.1552734375e-05" tx="4"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="20.5" y="4"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="3" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="shot asset" centerPoint3DY="-20.5">
+                  <matrix>
+                    <Matrix a="9.1552734375e-05" b="-1" c="-1" d="-9.1552734375e-05" tx="4"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="20.5" y="4"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

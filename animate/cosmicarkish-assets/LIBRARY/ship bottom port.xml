@@ -1,0 +1,42 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="ship bottom port" itemID="582f1e89-000007f7" lastModified="1480526682">
+  <timeline>
+    <DOMTimeline name="ship bottom port">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMShape selected="true" isFloating="true">
+                  <matrix>
+                    <Matrix a="1.39999389648438"/>
+                  </matrix>
+                  <fills>
+                    <FillStyle index="1">
+                      <SolidColor color="#990000"/>
+                    </FillStyle>
+                  </fills>
+                  <strokes>
+                    <StrokeStyle index="1">
+                      <SolidStroke scaleMode="normal" caps="none">
+                        <fill>
+                          <SolidColor/>
+                        </fill>
+                      </SolidStroke>
+                    </StrokeStyle>
+                  </strokes>
+                  <edges>
+                    <Edge fillStyle1="1" strokeStyle="1" edges="!0 0S6|1000 0!1000 0|1000 800!1000 800|0 800!0 800|0 0"/>
+                    <Edge cubics="!0 0(;0,0 1000,0 1000,0q0 0p1000 0);"/>
+                    <Edge cubics="!1000 0(;1000,0 1000,800 1000,800q1000 0 1000 800);"/>
+                    <Edge cubics="!1000 800(;1000,800 0,800 0,800p1000 800 0 800);"/>
+                    <Edge cubics="!0 800(;0,800 0,0 0,0q0 800 0 0)0,0;"/>
+                  </edges>
+                </DOMShape>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>
