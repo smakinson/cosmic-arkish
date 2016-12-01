@@ -5,7 +5,7 @@ import {PlayerInput} from "../io/PlayerInput";
 import {Shot} from "./Shot";
 import {State} from "../State";
 import Rectangle = createjs.Rectangle;
-import {Planet} from "./Planet";
+import {Planet, WARN_COMPLETE} from "./Planet";
 
 export enum Sides { Right, Left, Bottom, Top, None }
 
@@ -43,6 +43,8 @@ export class Game extends lib.Game {
     private ship: Ship;
     private shipIsNew: boolean = true;
 
+    private handlePlanetWarnCompleteListener:Function;
+
     private numMeteorsToGenerate: number;
 
     private playerInput: PlayerInput = PlayerInput.getInstance();
@@ -67,6 +69,8 @@ export class Game extends lib.Game {
 
         this.clearSky();
 
+        this.planet.off(WARN_COMPLETE, this.handlePlanetWarnCompleteListener);
+
         this.planet.destroy();
         this.ship.destroy();
 
@@ -90,6 +94,7 @@ export class Game extends lib.Game {
 
     private createPlanet(): void {
         this.planet = new Planet();
+        this.handlePlanetWarnCompleteListener = this.planet.on(WARN_COMPLETE, this.handlePlanetWarnComplete, this);
     }
 
     private createShip(): void {
@@ -219,6 +224,11 @@ export class Game extends lib.Game {
                 }
             }
         }
+    }
+
+    private handlePlanetWarnComplete(): void {
+        // TODO: Fire a meteor from the left, top or right.
+        console.log('HERE COMES A METEOR!!!');
     }
 
     private handleSpacePlayerInput(): void {

@@ -63,9 +63,10 @@ export class Saucer extends lib.Saucer {
         // Handle the saucer beam
         if (this.inShip == false && this.playerInput.beamOn) {
             this.beam.visible = true;
+
             // TODO: Play beam sound
             // TODO: Check for alien
-        }else{
+        } else {
             this.beam.visible = false;
         }
 
@@ -111,9 +112,6 @@ export class Saucer extends lib.Saucer {
                 // Lined up to go back into ship?
                 // Leave leeway for phone based input to not be exactly at up angle.
                 if ((angle >= ANGLE_UP_LEFT || angle <= ANGLE_UP_RIGHT) && (this.x > this.ship.x - PHONE_TOLERANCE && this.x < this.ship.x + PHONE_TOLERANCE)) {
-
-                    this._inShip = true;
-
                     this.y += Math.round((-distance * Math.cos(ANGLE_UP)));
                 } else {
 

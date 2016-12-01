@@ -1,0 +1,32 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="ship warning asset" itemID="58403847-000002d6" lastModified="1480603762">
+  <timeline>
+    <DOMTimeline name="ship warning asset">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="ship side warning asset">
+                  <matrix>
+                    <Matrix tx="-1"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="18.95" y="7.65"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+                <DOMSymbolInstance libraryItemName="ship side warning asset">
+                  <matrix>
+                    <Matrix a="-1" tx="412.9"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="18.95" y="7.65"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

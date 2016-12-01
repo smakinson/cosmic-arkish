@@ -56,7 +56,7 @@ export class Meteor extends lib.Meteor {
         var time: number = 4;
 
         // TODO: Increase the speed as levels progress
-        // TODO: Use greensock plugin to do this as velocity?
+        // TODO: Speed and increases differ for X & Y directions
         this._tween = TweenMax.to(this, time, {
             x: target.x,
             y: target.y,
@@ -71,25 +71,6 @@ export class Meteor extends lib.Meteor {
             }
         });
 
-        /*this.tween = TweenMax.to(this, speed, {
-         x: () => {
-         if (this.side == Sides.Left || this.side == Sides.Right) {
-         return target.x + Math.random() * 30;
-         } else {
-         return target.x;
-         }
-         },
-         y: () => {
-         if (this.side == Sides.Top || this.side == Sides.Bottom) {
-
-         } else {
-
-         }
-         },
-         useFrames: true,
-         ease: Linear.easeNone
-         });*/
-
         return this._tween;
     }
 
@@ -101,22 +82,4 @@ export class Meteor extends lib.Meteor {
         Meteor.meteorsTimeline.resume();
     }
 
-    /*wiggle(): void {
-
-     //this.gotoAndStop("wiggle");
-
-
-     //Game.timeline.to(this, 1, { rotation: 360, repeat: -1 }, 0);
-
-
-     Game.timeline.fromTo(this, .3, {
-     y: function () {
-     return Math.random() * 30;
-     }
-     }, {
-     y: function () {
-     return Math.random() * 30;
-     }, repeat: -1, yoyo: true
-     }, 0);
-     }*/
 }

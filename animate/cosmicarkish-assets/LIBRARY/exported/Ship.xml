@@ -1,4 +1,4 @@
-<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Ship" itemID="582c69d2-000002b0" linkageExportForAS="true" linkageClassName="Ship" lastModified="1480526425" lastUniqueIdentifier="1">
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Ship" itemID="582c69d2-000002b0" linkageExportForAS="true" linkageClassName="Ship" lastModified="1480605864" lastUniqueIdentifier="2">
   <persistentData>
     <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
   </persistentData>
@@ -21,7 +21,7 @@
             </DOMFrame>
           </frames>
         </DOMLayer>
-        <DOMLayer name="ship body" color="#FF800A" current="true" isSelected="true" autoNamed="false">
+        <DOMLayer name="ship body" color="#FF800A" locked="true" autoNamed="false">
           <frames>
             <DOMFrame index="0" duration="8" keyMode="9728">
               <elements>
@@ -379,7 +379,7 @@
             </DOMFrame>
           </frames>
         </DOMLayer>
-        <DOMLayer name="center line" color="#FF4FFF" autoNamed="false">
+        <DOMLayer name="center line" color="#FF4FFF" locked="true" autoNamed="false">
           <frames>
             <DOMFrame index="0" duration="8" keyMode="9728">
               <elements>
@@ -394,6 +394,22 @@
 !-3470 -53|3470 -53!3470 -53|3470 -7!3470 -7|-3470 -7!-3470 -7|-3470 -53"/>
                   </edges>
                 </DOMShape>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+        <DOMLayer name="warning bits" color="#9933CC" current="true" isSelected="true" autoNamed="false">
+          <frames>
+            <DOMFrame index="0" duration="8" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="ship warning asset" name="warning" selected="true">
+                  <matrix>
+                    <Matrix tx="-206.75" ty="-9.1"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="205.95" y="7.65"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
               </elements>
             </DOMFrame>
           </frames>

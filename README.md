@@ -27,3 +27,5 @@ Use the arrow keys to fire at meteors and move the saucer and the spacebar to be
 
 ####Phone or tablet Option
 My intent is to build an app or a webpage that can be used on a phone to control the game on my website. I will fill in the details here once I know what they are.
+
+Original insructions found here: [http://www.gamesdatabase.org//Media/SYSTEM/Atari_2600/Manual/formated/Cosmic_Ark_-_1982_-_Imagic.pdf](http://www.gamesdatabase.org//Media/SYSTEM/Atari_2600/Manual/formated/Cosmic_Ark_-_1982_-_Imagic.pdf)

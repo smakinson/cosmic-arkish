@@ -1,10 +1,26 @@
-<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Saucer" itemID="582f1546-0000075d" linkageExportForAS="true" linkageClassName="Saucer" lastModified="1480526749" lastUniqueIdentifier="2">
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Saucer" itemID="582f1546-0000075d" linkageExportForAS="true" linkageClassName="Saucer" lastModified="1480605882" lastUniqueIdentifier="2">
   <persistentData>
     <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
   </persistentData>
   <timeline>
     <DOMTimeline name="Saucer">
       <layers>
+        <DOMLayer name="beam" color="#4F80FF" current="true" isSelected="true" autoNamed="false">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="saucer beam asset" name="beam" selected="true">
+                  <matrix>
+                    <Matrix tx="-38.5" ty="7.1"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point x="47.6" y="40.35"/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
         <DOMLayer name="saucer" color="#0000FF" autoNamed="false">
           <frames>
             <DOMFrame index="0" keyMode="9728">
@@ -15,22 +31,6 @@
                   </matrix>
                   <transformationPoint>
                     <Point x="42.8" y="12.8"/>
-                  </transformationPoint>
-                </DOMSymbolInstance>
-              </elements>
-            </DOMFrame>
-          </frames>
-        </DOMLayer>
-        <DOMLayer name="beam" color="#4F80FF" current="true" isSelected="true" autoNamed="false">
-          <frames>
-            <DOMFrame index="0" keyMode="9728">
-              <elements>
-                <DOMSymbolInstance libraryItemName="saucer beam asset" name="beam" selected="true">
-                  <matrix>
-                    <Matrix tx="-39.2" ty="7.1"/>
-                  </matrix>
-                  <transformationPoint>
-                    <Point x="47.6" y="40.35"/>
                   </transformationPoint>
                 </DOMSymbolInstance>
               </elements>

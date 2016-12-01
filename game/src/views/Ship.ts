@@ -22,13 +22,25 @@ export class Ship extends lib.Ship {
 
     portOpen: boolean = false;
 
+    private warnTween: TweenMax = new TweenMax(this, 0, {});
+
+    // on the stage:
+    private port: MovieClip;
+    private warning: MovieClip;
+
     constructor() {
         super();
-        //this.setBounds(-226, -87, WIDTH, HEIGHT);
+
+        this.warning.visible = false;
     }
 
     destroy(): TweenMax {
         this._destroyed = true;
+
+        this.stopWarn();
+
+        // TODO: Stop sounds?
+        // TODO: What else?
 
         return TweenMax.to(this, .6, {
             alpha: 0,
@@ -56,5 +68,20 @@ export class Ship extends lib.Ship {
     closePort(): void {
         this.play();
         this.portOpen = false;
+    }
+
+    warn(): void {
+        this.warnTween = TweenMax.delayedCall(.3, this.toggleWarn, [], this);
+        // TODO: Play warning sound
+    }
+
+    private toggleWarn(): void {
+        this.warning.visible = !this.warning.visible;
+        this.warn();
+    }
+
+    stopWarn(): void {
+        this.warnTween.kill();
+        this.warning.visible = false;
     }
 }

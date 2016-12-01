@@ -7,6 +7,8 @@ import {State} from "../State";
 
 const GROUND_HEIGHT: number = 40;
 
+export const WARN_COMPLETE:string = 'Planet.WARN_COMPLETE';
+
 export class Planet extends lib.Planet {
 
     private _destroyed: boolean = false;
@@ -16,8 +18,9 @@ export class Planet extends lib.Planet {
 
     private guns: PlanetGuns;
     private _saucer: Saucer;
+
     get saucerDocked(): Boolean {
-        if(this._saucer)
+        if (this._saucer)
             return this._saucer.docked;
 
         return false;
@@ -25,6 +28,8 @@ export class Planet extends lib.Planet {
 
     private saucerArea: Rectangle;
     private ship: Ship;
+
+    private warnTween: TweenMax = new TweenMax(this, 0, {});
 
     private state: State = State.getInstance();
 
@@ -99,7 +104,8 @@ export class Planet extends lib.Planet {
         this.createSaucer();
         this.createGuns();
 
-        // TODO: Start meteor alert timer.
+        this.startWarningTimer();
+
         // TODO: More...
     }
 
@@ -116,8 +122,32 @@ export class Planet extends lib.Planet {
         }
         this.guns = null;
 
-
         // TODO: More to reset?
+    }
+
+    private startWarningTimer(): void {
+
+        // TODO: Determine this delay by the level.
+        let warningDelay: number = 10;
+
+        this.warnTween = TweenMax.delayedCall(warningDelay, this.handleWarningTime, [], this);
+    }
+
+    private handleWarningTime(): void {
+        this.warnTween.kill();
+        this.ship.warn();
+
+        // TODO: Determine this delay by the level?
+        let warningDelay: number = 7;
+
+        this.warnTween = TweenMax.delayedCall(warningDelay, this.handleWarningComplete, [], this);
+    }
+
+    private handleWarningComplete(): void {
+        this.warnTween.kill();
+        this.ship.stopWarn();
+
+        this.dispatchEvent(WARN_COMPLETE);
     }
 
 }
