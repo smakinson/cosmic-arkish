@@ -133,7 +133,7 @@ export class Game extends lib.Game {
 
         if (this.state.paused)return;
 
-        let hitShip: boolean = false;
+        let meteorHitShip: boolean = false;
 
         this.handleSpacePlayerInput();
 
@@ -145,33 +145,32 @@ export class Game extends lib.Game {
                     case Sides.Top:
                         if (meteor.y > this.ship.y + this.ship.topEdgeDistance) {
                             this.destroyMeteor(meteor);
-                            hitShip = true;
+                            meteorHitShip = true;
                         }
                         break;
                     case Sides.Right:
                         if (meteor.x < this.ship.x + this.ship.getWidth() * .5) {
                             this.destroyMeteor(meteor);
-                            hitShip = true;
+                            meteorHitShip = true;
                         }
                         break;
                     case Sides.Bottom:
                         if (meteor.y < this.ship.y + this.ship.bottomDistance) {
                             this.destroyMeteor(meteor);
-                            hitShip = true;
+                            meteorHitShip = true;
                         }
                         break;
                     case Sides.Left:
                         if (meteor.x > this.ship.x - this.ship.getWidth() * .5) {
                             this.destroyMeteor(meteor);
-                            hitShip = true;
+                            meteorHitShip = true;
                         }
                         break;
                 }
 
-                if (hitShip) {
-                    //console.log('BOOM')
-                    this.state.allowShots = false;
-                    this.clearSky();
+                if (meteorHitShip) {
+
+                    this.state.meteorHitShip();
 
                     // Play ship explosion and move on.
                     this.gameTimeline.add(this.ship.destroy());
@@ -184,39 +183,46 @@ export class Game extends lib.Game {
 
                         if (this.currentMeteor == null)break;
 
-                        let shotHit: boolean = false;
+                        let shotHitMeteor: boolean = false;
+
+                        // TODO: Can miss wiggling meteor?
 
                         switch (this.currentMeteor.side) {
                             case Sides.Top:
                                 if (shot.y <= this.currentMeteor.y) {
-                                    shotHit = true;
+                                    shotHitMeteor = true;
                                 }
                                 break;
                             case Sides.Right:
                                 if (shot.x >= this.currentMeteor.x) {
-                                    shotHit = true;
+                                    shotHitMeteor = true;
                                 }
                                 break;
                             case Sides.Bottom:
                                 if (shot.y >= this.currentMeteor.y) {
-                                    shotHit = true;
+                                    shotHitMeteor = true;
                                 }
                                 break;
                             case Sides.Left:
                                 if (shot.x <= this.currentMeteor.x) {
-                                    shotHit = true;
+                                    shotHitMeteor = true;
                                 }
                                 break;
                         }
 
-                        if (shotHit) {
+                        if (shotHitMeteor) {
+
+                            // Increase score, etc.
+                            this.state.meteorDestroyed(this.currentMeteor);
+
                             shot.destroy();
                             this.destroyMeteor(this.currentMeteor);
                             this.currentMeteor = null;
                             this.removeShot(shot);
                             this.jumpToNextMeteor();
 
-                            // TODO: Increase score.
+                            // TODO: Play a sound?
+
                             // TODO: Increase ship power? Research details...
                         }
 
@@ -271,7 +277,7 @@ export class Game extends lib.Game {
 
                 this.gameTimeline.add(shot.fire(), this.gameTimeline.time());
 
-                // TODO: Decrease ship power? Research details...
+                this.state.shotFiredAtMeteor();
             }
         }
     }
@@ -321,7 +327,7 @@ export class Game extends lib.Game {
 
         console.log('Ship Destroyed!!');
 
-        this.state.allowShots = true;
+        this.state.allowShots = false;
 
         this.clearSky();
 
@@ -329,10 +335,12 @@ export class Game extends lib.Game {
             this.removeChild(this.ship);
         }
 
+        this.state.shipDestroyed();
+
         // TODO: Take away ship power.
         // TODO: What else?
 
-        if (this.state.powerLevel <= 0) {
+        if (this.state.fuelLevel <= 0) {
             this.gameOver();
         } else {
             this.continueGame();
