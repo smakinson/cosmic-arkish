@@ -58,10 +58,6 @@ export class State extends createjs.EventDispatcher {
             this.fuelLevel--;
     }
 
-    shipDestroyed(): void {
-
-    }
-
     beastieCaptured(): void {
 
         let fuel: Number = this.fuelLevel + 10;

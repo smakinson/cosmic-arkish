@@ -335,8 +335,6 @@ export class Game extends lib.Game {
             this.removeChild(this.ship);
         }
 
-        this.state.shipDestroyed();
-
         // TODO: Take away ship power.
         // TODO: What else?
 
