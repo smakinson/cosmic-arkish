@@ -60,7 +60,7 @@ export class State extends createjs.EventDispatcher {
 
     beastieCaptured(): void {
 
-        let fuel: Number = this.fuelLevel + 10;
+        let fuel: number = this.fuelLevel + 10;
 
         this.fuelLevel = fuel > MAX_FUEL ? MAX_FUEL : fuel;
     }
