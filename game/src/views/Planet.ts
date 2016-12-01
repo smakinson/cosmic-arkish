@@ -1,13 +1,14 @@
-import {PlanetGuns} from "./PlanetGuns";
+import {PlanetGuns, SAUCER_HIT_EVENT} from "./PlanetGuns";
 import {Saucer} from "./Saucer";
 import Rectangle = createjs.Rectangle;
 import {CANVAS_HEIGHT, CANVAS_WIDTH} from "./Game";
 import {Ship} from "./Ship";
 import {State} from "../State";
+import {Beasts} from "./Beasts";
 
 const GROUND_HEIGHT: number = 40;
 
-export const WARN_COMPLETE:string = 'Planet.WARN_COMPLETE';
+export const WARN_COMPLETE_EVENT: string = 'Planet.WARN_COMPLETE_EVENT';
 
 export class Planet extends lib.Planet {
 
@@ -28,6 +29,10 @@ export class Planet extends lib.Planet {
 
     private saucerArea: Rectangle;
     private ship: Ship;
+    private beast1: Beasts;
+    private beast2: Beasts;
+
+    private handleSaucerHitListener: Function;
 
     private warnTween: TweenMax = new TweenMax(this, 0, {});
 
@@ -46,6 +51,8 @@ export class Planet extends lib.Planet {
         this.guns.destroy();
         this._saucer.destroy();
 
+        // TODO: Stop sounds?
+
         if (this.parent) {
             this.parent.removeChild(this);
         }
@@ -54,9 +61,6 @@ export class Planet extends lib.Planet {
     private createSaucer(): void {
 
         this._saucer = new Saucer(this.ship, this.saucerArea);
-        this._saucer.x = this.ship.x;
-        this._saucer.y = this.ship.y;
-
         this.addChildAt(this._saucer, 0);
     }
 
@@ -64,7 +68,7 @@ export class Planet extends lib.Planet {
         // TODO: add guns on proper levels
         if (this.state.level >= 1) {
             this.guns = new PlanetGuns(this._saucer, this.saucerArea);
-            this.addChildAt(this.guns, 0);
+            this.addChildAt(this.guns, 1);
         }
 
         this.guns.run();
@@ -80,6 +84,12 @@ export class Planet extends lib.Planet {
         return TweenMax.to(this.ground, .3, {
             y: CANVAS_HEIGHT
         });
+    }
+
+    private handleSaucerHit(): void {
+
+        let tween: TweenMax = this._saucer.blowUp();
+
     }
 
     pause(): void {
@@ -104,15 +114,22 @@ export class Planet extends lib.Planet {
         this.createSaucer();
         this.createGuns();
 
+        this.handleSaucerHitListener = this.guns.on(SAUCER_HIT_EVENT, this.handleSaucerHit, this);
+
         this.startWarningTimer();
 
         // TODO: More...
     }
 
     reset(): void {
-        this._saucer.destroy();
-        if (this.contains(this._saucer)) {
-            this.removeChild(this._saucer);
+
+        this.guns.off(SAUCER_HIT_EVENT, this.handleSaucerHit);
+
+        if (this._saucer) {
+            this._saucer.destroy();
+            if (this.contains(this._saucer)) {
+                this.removeChild(this._saucer);
+            }
         }
         this._saucer = null;
 
@@ -147,7 +164,7 @@ export class Planet extends lib.Planet {
         this.warnTween.kill();
         this.ship.stopWarn();
 
-        this.dispatchEvent(WARN_COMPLETE);
+        this.dispatchEvent(WARN_COMPLETE_EVENT);
     }
 
 }

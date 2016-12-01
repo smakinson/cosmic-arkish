@@ -18,4 +18,5 @@ declare namespace lib{
     export class Shot extends MovieClip{}
     export class Planet extends MovieClip{}
     export class PlanetGuns extends MovieClip{}
+    export class Beasts extends MovieClip{}
 }

@@ -7,6 +7,8 @@ import Rectangle = createjs.Rectangle;
 import {State} from "../State";
 
 const PHONE_TOLERANCE: number = 5;
+const WIDTH: number = 65;
+const HEIGHT: number = 17;
 
 export class Saucer extends lib.Saucer {
 
@@ -25,6 +27,9 @@ export class Saucer extends lib.Saucer {
         return this._docked;
     }
 
+    private blowingUp: boolean = false;
+    private blowingUpTween: TweenMax = new TweenMax(this, 0, {});
+
     private state: State = State.getInstance();
     private playerInput: PlayerInput = PlayerInput.getInstance();
 
@@ -35,15 +40,20 @@ export class Saucer extends lib.Saucer {
     constructor(public ship: Ship, public flyZone: Rectangle) {
         super();
 
+        this.dock();
+
         TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
 
         this.beam.visible = false;
     }
 
     destroy(): void {
-        this._destroyed = true;
 
         TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+
+        this._destroyed = true;
+
+        this.blowingUpTween.kill();
 
         this.playerInput = null;
 
@@ -52,11 +62,41 @@ export class Saucer extends lib.Saucer {
         }
     }
 
+    dock(): void {
+        this.x = this.ship.x;
+        this.y = this.ship.y;
+        this._docked = true;
+        this._inShip = true;
+    }
+
+    blowUp(): TweenMax {
+
+        if (this.blowingUp == false) {
+
+            this.blowingUp = true;
+
+            // TODO: Make this a better animation.
+            this.blowingUpTween = TweenMax.to(this, .3, {
+                alpha: 0,
+                onStart: () => {
+                    // TODO: Play saucer hit sound.
+                },
+                onComplete: () => {
+                    this.alpha = 1;
+                    this.blowingUp = false;
+                    this.dock();
+                }
+            });
+        }
+
+        return this.blowingUpTween;
+    }
+
     private handleGameTick(): void {
 
-        if (this.state.paused)return;
+        if (this.state.paused || this.blowingUp)return;
 
-        let distance: number = 3;
+        let distance: number;
         let x: number = this.x, y: number = this.y;
         let angle: number = this.playerInput.angle;
 
@@ -71,6 +111,8 @@ export class Saucer extends lib.Saucer {
         }
 
         if (angle != ANGLE_NONE && this.beam.visible == false) {
+
+            distance = 1.5;
 
             if (this.y < this.ship.y + this.ship.bottomDistance) {
                 this._inShip = true;
@@ -98,13 +140,13 @@ export class Saucer extends lib.Saucer {
                 if (angle < ANGLE_DOWN_LEFT && angle > ANGLE_DOWN_RIGHT) {
 
                     y = this.y + (-distance * Math.cos(ANGLE_DOWN));
-                    this.y = Math.round(y);
+                    this.y = y;
 
                 } else if (this.y > this.ship.y && (angle >= ANGLE_UP_LEFT || angle <= ANGLE_UP_RIGHT)) { // Still moving into docked position?
 
                     //if (this.x > this.ship.x - PHONE_TOLERANCE && this.x < this.ship.x + PHONE_TOLERANCE) {
                     y = this.y + (-distance * Math.cos(ANGLE_UP));
-                    this.y = Math.round(y);
+                    this.y = y;
                     //}
                 }
             } else {
@@ -112,7 +154,7 @@ export class Saucer extends lib.Saucer {
                 // Lined up to go back into ship?
                 // Leave leeway for phone based input to not be exactly at up angle.
                 if ((angle >= ANGLE_UP_LEFT || angle <= ANGLE_UP_RIGHT) && (this.x > this.ship.x - PHONE_TOLERANCE && this.x < this.ship.x + PHONE_TOLERANCE)) {
-                    this.y += Math.round((-distance * Math.cos(ANGLE_UP)));
+                    this.y += (-distance * Math.cos(ANGLE_UP));
                 } else {
 
                     x = this.x + (distance * Math.sin(angle));
@@ -120,7 +162,7 @@ export class Saucer extends lib.Saucer {
 
                     if (this.flyZone.contains(x, y)) {
                         // Normal movement.
-                        this.set({ x: Math.round(x), y: Math.round(y) });
+                        this.set({ x: x, y: y });
                     } else {
                         // Movement on edges of flyzone.
                         let useAngle: number;
@@ -143,7 +185,7 @@ export class Saucer extends lib.Saucer {
                             y = this.y + (-distance * Math.cos(useAngle));
 
                             if (this.flyZone.contains(x, y)) {
-                                this.set({ x: Math.round(x), y: Math.round(y) });
+                                this.set({ x: x, y: y });
                             }
                         }
                     }
@@ -152,6 +194,14 @@ export class Saucer extends lib.Saucer {
 
             // TODO: Play saucer movement sound.
         }
+    }
+
+    getHeight(): number {
+        return HEIGHT * this.scaleY;
+    }
+
+    getWidth(): number {
+        return WIDTH * this.scaleX;
     }
 
 }

@@ -5,7 +5,7 @@ import {PlayerInput} from "../io/PlayerInput";
 import {Shot} from "./Shot";
 import {State} from "../State";
 import Rectangle = createjs.Rectangle;
-import {Planet, WARN_COMPLETE} from "./Planet";
+import {Planet, WARN_COMPLETE_EVENT} from "./Planet";
 
 export enum Sides { Right, Left, Bottom, Top, None }
 
@@ -67,9 +67,9 @@ export class Game extends lib.Game {
 
     destroy(): void {
 
-        this.clearSky();
+        this.planet.off(WARN_COMPLETE_EVENT, this.handlePlanetWarnCompleteListener);
 
-        this.planet.off(WARN_COMPLETE, this.handlePlanetWarnCompleteListener);
+        this.clearSky();
 
         this.planet.destroy();
         this.ship.destroy();
@@ -94,7 +94,7 @@ export class Game extends lib.Game {
 
     private createPlanet(): void {
         this.planet = new Planet();
-        this.handlePlanetWarnCompleteListener = this.planet.on(WARN_COMPLETE, this.handlePlanetWarnComplete, this);
+        this.handlePlanetWarnCompleteListener = this.planet.on(WARN_COMPLETE_EVENT, this.handlePlanetWarnComplete, this);
     }
 
     private createShip(): void {

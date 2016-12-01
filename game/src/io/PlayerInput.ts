@@ -141,10 +141,11 @@ export class PlayerInput extends createjs.EventDispatcher {
     }
 
     destroy(): void {
-        $('html').unbind('keydown');
-        $('html').unbind('keyup');
 
         TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+
+        $('html').unbind('keydown');
+        $('html').unbind('keyup');
 
         // TODO: Unbind events. etc.
     }

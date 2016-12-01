@@ -5,11 +5,11 @@
   <timeline>
     <DOMTimeline name="Saucer">
       <layers>
-        <DOMLayer name="beam" color="#4F80FF" current="true" isSelected="true" autoNamed="false">
+        <DOMLayer name="beam" color="#4F80FF" autoNamed="false">
           <frames>
             <DOMFrame index="0" keyMode="9728">
               <elements>
-                <DOMSymbolInstance libraryItemName="saucer beam asset" name="beam" selected="true">
+                <DOMSymbolInstance libraryItemName="saucer beam asset" name="beam">
                   <matrix>
                     <Matrix tx="-38.5" ty="7.1"/>
                   </matrix>
@@ -21,11 +21,11 @@
             </DOMFrame>
           </frames>
         </DOMLayer>
-        <DOMLayer name="saucer" color="#0000FF" autoNamed="false">
+        <DOMLayer name="saucer" color="#0000FF" current="true" isSelected="true" autoNamed="false">
           <frames>
             <DOMFrame index="0" keyMode="9728">
               <elements>
-                <DOMSymbolInstance libraryItemName="saucer asset" name="saucer">
+                <DOMSymbolInstance libraryItemName="saucer asset" name="saucer" selected="true">
                   <matrix>
                     <Matrix tx="-32.5"/>
                   </matrix>

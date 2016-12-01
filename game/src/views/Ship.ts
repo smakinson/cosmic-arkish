@@ -42,8 +42,12 @@ export class Ship extends lib.Ship {
         // TODO: Stop sounds?
         // TODO: What else?
 
+        // TODO: Make this a better animation.
         return TweenMax.to(this, .6, {
             alpha: 0,
+            onStart: () => {
+                // TODO: Play ship hit sound.
+            },
             onComplete: () => {
                 if (this.parent) {
                     this.parent.removeChild(this);

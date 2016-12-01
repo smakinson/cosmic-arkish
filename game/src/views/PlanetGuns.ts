@@ -1,6 +1,9 @@
 import Rectangle = createjs.Rectangle;
 import {CANVAS_HEIGHT} from "./Game";
 import {Saucer} from "./Saucer";
+import Point = createjs.Point;
+
+export const SAUCER_HIT_EVENT: string = 'PlanetGuns.SAUCER_HIT_EVENT';
 
 export class PlanetGuns extends lib.PlanetGuns {
 
@@ -23,9 +26,14 @@ export class PlanetGuns extends lib.PlanetGuns {
         this.y = CANVAS_HEIGHT;
 
         this.laser.visible = false;
+
+        TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
     }
 
     destroy(): void {
+
+        TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+
         this._destroyed = true;
 
         this.laser.visible = false;
@@ -38,13 +46,29 @@ export class PlanetGuns extends lib.PlanetGuns {
         }
     }
 
+    private handleGameTick(): void {
+
+        // See if the saucer was hit
+        let laserPosition: Point = this.localToGlobal(this.laser.x, this.laser.y);
+        if (this.laser.visible) {
+            if (laserPosition.y >= this.saucer.y - 5 && laserPosition.y <= this.saucer.y + this.saucer.getHeight()) {
+                this.dispatchEvent(SAUCER_HIT_EVENT);
+            }
+        }
+    }
+
     pause(): void {
+
+        TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+
         this.tween.pause();
         this.shootQueueTween.pause();
         // TODO
     }
 
     resume(): void {
+        TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
+
         this.tween.resume();
         this.shootQueueTween.resume();
         // TODO
@@ -71,7 +95,7 @@ export class PlanetGuns extends lib.PlanetGuns {
     private queueShot(): void {
         // Begin shooting timer.
         // TODO: Speed this up by level.
-        let shotDelay: number = 3;
+        let shotDelay: number = 5;
         this.shootQueueTween = TweenMax.delayedCall(shotDelay, this.shoot, [], this);
     }
 
@@ -79,7 +103,8 @@ export class PlanetGuns extends lib.PlanetGuns {
         this.laser.visible = true;
         this.shootQueueTween = TweenMax.delayedCall(.1, this.hideShot, [], this);
 
-        // TODO: Play shot sound.
+
+        // TODO: Play planet gun shot sound.
     }
 
     private hideShot(): void {
