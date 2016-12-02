@@ -145,25 +145,25 @@ export class Game extends lib.Game {
                 // Meteor hit ship?
                 switch (meteor.side) {
                     case Sides.Top:
-                        if (meteor.y > this.ship.y + this.ship.topEdgeDistance) {
+                        if (meteor.y > this.ship.y + this.ship.topEdgeDistance + 14) {
                             this.destroyMeteor(meteor);
                             meteorHitShip = true;
                         }
                         break;
                     case Sides.Right:
-                        if (meteor.x < this.ship.x + this.ship.getWidth() * .5) {
+                        if (meteor.x < this.ship.x + this.ship.getWidth() * .5 - 11) {
                             this.destroyMeteor(meteor);
                             meteorHitShip = true;
                         }
                         break;
                     case Sides.Bottom:
-                        if (meteor.y < this.ship.y + this.ship.bottomDistance) {
+                        if (meteor.y < this.ship.y + this.ship.bottomDistance - 11) {
                             this.destroyMeteor(meteor);
                             meteorHitShip = true;
                         }
                         break;
                     case Sides.Left:
-                        if (meteor.x > this.ship.x - this.ship.getWidth() * .5) {
+                        if (meteor.x > this.ship.x - this.ship.getWidth() * .5 + 11) {
                             this.destroyMeteor(meteor);
                             meteorHitShip = true;
                         }
