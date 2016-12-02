@@ -46,8 +46,10 @@ export class State extends createjs.EventDispatcher {
 
         let fuel: number = this.fuelLevel - 10;
 
-        if (this.fuelLevel < 0)
-            this.fuelLevel = 0;
+        if (fuel < 0)
+            fuel = 0;
+
+        this.fuelLevel = fuel;
 
         // TODO: Show score & fuel on screen and update them.
     }
