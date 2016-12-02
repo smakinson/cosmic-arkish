@@ -46,8 +46,10 @@ export class State extends createjs.EventDispatcher {
 
         let fuel: number = this.fuelLevel - 10;
 
-        if (fuel < 0)
-            fuel = 0;
+        // The original lets me have 5 ships if I just let the meteors hit me till its game over.
+        // So it must be letting the fuel go under 0 to mean game over.
+        if (fuel < -1)
+            fuel = -1;
 
         this.fuelLevel = fuel;
 
@@ -56,7 +58,9 @@ export class State extends createjs.EventDispatcher {
 
     shotFiredAtMeteor(): void {
 
-        if (this.fuelLevel > 0)
+        // The original lets me have 5 ships if I just let the meteors hit me till its game over.
+        // So it must be letting the fuel go under 0 to mean game over.
+        if (this.fuelLevel > -1)
             this.fuelLevel--;
     }
 

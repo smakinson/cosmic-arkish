@@ -350,7 +350,9 @@ export class Game extends lib.Game {
         // TODO: Take away ship power.
         // TODO: What else?
 
-        if (this.state.fuelLevel <= 0) {
+        // The original lets me have 5 ships if I just let the meteors hit me till its game over.
+        // So it must be letting the fuel hit 0 and play once more.
+        if (this.state.fuelLevel < 0) {
             this.gameOver();
         } else {
             this.continueGame();
