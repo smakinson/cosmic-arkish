@@ -2,7 +2,7 @@ import {PlanetGuns, SAUCER_HIT_EVENT} from "./PlanetGuns";
 import {Saucer} from "./Saucer";
 import Rectangle = createjs.Rectangle;
 import {CANVAS_HEIGHT, CANVAS_WIDTH} from "./Game";
-import {Ship} from "./Ship";
+import {Ship, SHIP_DESTROYED_EVENT} from "./Ship";
 import {State} from "../State";
 import {Beasts} from "./Beasts";
 
@@ -33,6 +33,7 @@ export class Planet extends lib.Planet {
     private beast2: Beasts;
 
     private handleSaucerHitListener: Function;
+    private handleShipDestroyedListener: Function;
 
     private warnTween: TweenMax = new TweenMax(this, 0, {});
 
@@ -48,8 +49,7 @@ export class Planet extends lib.Planet {
     destroy(): void {
         this._destroyed = true;
 
-        this.guns.destroy();
-        this._saucer.destroy();
+        this.reset();
 
         // TODO: Stop sounds?
 
@@ -58,8 +58,32 @@ export class Planet extends lib.Planet {
         }
     }
 
-    private createSaucer(): void {
+    private destroySaucer(): void {
+        if (this._saucer) {
+            this._saucer.destroy();
+            if (this.contains(this._saucer)) {
+                this.removeChild(this._saucer);
+            }
+        }
+        this._saucer = null;
+    }
 
+    private destroyGuns(): void {
+        if (this.guns) {
+            this.guns.off(SAUCER_HIT_EVENT, this.handleSaucerHit);
+            this.guns.destroy();
+            if (this.contains(this.guns)) {
+                this.removeChild(this.guns);
+            }
+        }
+        this.guns = null;
+    }
+
+    clearSky(): void {
+        this.destroySaucer();
+    }
+
+    private createSaucer(): void {
         this._saucer = new Saucer(this.ship, this.saucerArea);
         this.addChildAt(this._saucer, 0);
     }
@@ -87,9 +111,7 @@ export class Planet extends lib.Planet {
     }
 
     private handleSaucerHit(): void {
-
-        let tween: TweenMax = this._saucer.blowUp();
-
+        this._saucer.blowUp();
     }
 
     pause(): void {
@@ -115,6 +137,7 @@ export class Planet extends lib.Planet {
         this.createGuns();
 
         this.handleSaucerHitListener = this.guns.on(SAUCER_HIT_EVENT, this.handleSaucerHit, this);
+        this.handleShipDestroyedListener = this.ship.on(SHIP_DESTROYED_EVENT, this.handleShipDestroyed, this);
 
         this.startWarningTimer();
 
@@ -123,21 +146,12 @@ export class Planet extends lib.Planet {
 
     reset(): void {
 
-        this.guns.off(SAUCER_HIT_EVENT, this.handleSaucerHit);
+        this.destroySaucer();
+        this.destroyGuns();
 
-        if (this._saucer) {
-            this._saucer.destroy();
-            if (this.contains(this._saucer)) {
-                this.removeChild(this._saucer);
-            }
+        if (this.ship) {
+            this.ship.off(SHIP_DESTROYED_EVENT, this.handleShipDestroyed);
         }
-        this._saucer = null;
-
-        this.guns.destroy();
-        if (this.contains(this.guns)) {
-            this.removeChild(this.guns);
-        }
-        this.guns = null;
 
         // TODO: More to reset?
     }
@@ -150,12 +164,16 @@ export class Planet extends lib.Planet {
         this.warnTween = TweenMax.delayedCall(warningDelay, this.handleWarningTime, [], this);
     }
 
+    private handleShipDestroyed(): void {
+        this.destroySaucer();
+    }
+
     private handleWarningTime(): void {
         this.warnTween.kill();
         this.ship.warn();
 
         // TODO: Determine this delay by the level?
-        let warningDelay: number = 7;
+        let warningDelay: number = 3;
 
         this.warnTween = TweenMax.delayedCall(warningDelay, this.handleWarningComplete, [], this);
     }

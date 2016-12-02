@@ -54,7 +54,7 @@ export class State extends createjs.EventDispatcher {
 
     shotFiredAtMeteor(): void {
 
-        if(this.fuelLevel > 0)
+        if (this.fuelLevel > 0)
             this.fuelLevel--;
     }
 

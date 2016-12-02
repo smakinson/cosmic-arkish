@@ -77,6 +77,7 @@ export class PlanetGuns extends lib.PlanetGuns {
     run(): void {
 
         // Bring the guns to the repeat height.
+        // TODO: Make sure this y position can hit the saucer at its lowest y position.
         TweenMax.to(this, .5, { y: this.shootZone.y + this.shootZone.height, delay: .5 });
 
         // Begin the repeating up/down movement.

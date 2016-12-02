@@ -8,8 +8,6 @@ export class Meteor extends lib.Meteor {
         return this._destroyed;
     }
 
-    private static meteorsTimeline: TimelineMax = new TimelineMax();
-
     private _tween: TweenMax;
     get tween(): TweenMax {
         return this._tween;
@@ -53,15 +51,15 @@ export class Meteor extends lib.Meteor {
 
     fireAt(target: DisplayObject): TweenMax {
 
-        var time: number = 4;
+        let time: number = 8;
 
         // TODO: Increase the speed as levels progress
         // TODO: Speed and increases differ for X & Y directions
         this._tween = TweenMax.to(this, time, {
             x: target.x,
             y: target.y,
-            useFrames: true,
-            ease: Linear.easeInOut,
+            //useFrames: true,
+            ease: Strong.easeOut,
             onStart: () => {
                 if (this.wiggle) {
                     // TODO: Play meteor wiggle sound.
@@ -72,14 +70,6 @@ export class Meteor extends lib.Meteor {
         });
 
         return this._tween;
-    }
-
-    pause(): void {
-        Meteor.meteorsTimeline.pause();
-    }
-
-    resume(): void {
-        Meteor.meteorsTimeline.resume();
     }
 
 }

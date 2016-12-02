@@ -48,14 +48,12 @@ export class Saucer extends lib.Saucer {
     }
 
     destroy(): void {
-
+        console.log('destroyed saucer');
         TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
 
         this._destroyed = true;
 
         this.blowingUpTween.kill();
-
-        this.playerInput = null;
 
         if (this.parent) {
             this.parent.removeChild(this);

@@ -3,6 +3,8 @@ import Rectangle = createjs.Rectangle;
 const WIDTH: number = 350;
 const HEIGHT: number = 110;
 
+export const SHIP_DESTROYED_EVENT: string = 'Ship.SHIP_DESTROYED_EVENT';
+
 export class Ship extends lib.Ship {
 
     private _destroyed: boolean = false;
@@ -41,6 +43,8 @@ export class Ship extends lib.Ship {
 
         // TODO: Stop sounds?
         // TODO: What else?
+
+        this.dispatchEvent(SHIP_DESTROYED_EVENT);
 
         // TODO: Make this a better animation.
         return TweenMax.to(this, .6, {

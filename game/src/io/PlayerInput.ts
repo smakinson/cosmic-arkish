@@ -101,7 +101,7 @@ export class PlayerInput extends createjs.EventDispatcher {
         $('html').bind('keydown', (event) => {
             //console.log(event.keyCode);
 
-            if(event.keyCode == 32){    // Space bar
+            if (event.keyCode == 32) {    // Space bar
                 this.spacebarPressed = true;
             }
 

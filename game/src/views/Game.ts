@@ -39,11 +39,12 @@ export class Game extends lib.Game {
 
     // The meteor heading towards the ship.
     private currentMeteor: Meteor = null;
+    private numMeteorsShot: number = 0;
 
     private ship: Ship;
     private shipIsNew: boolean = true;
 
-    private handlePlanetWarnCompleteListener:Function;
+    private handlePlanetWarnCompleteListener: Function;
 
     private numMeteorsToGenerate: number;
 
@@ -87,7 +88,7 @@ export class Game extends lib.Game {
         this.state.level++;
 
         // TODO: Calculate this based on level.
-        this.numMeteorsToGenerate = 1;
+        this.numMeteorsToGenerate = 5;
 
         this.gotoSpaceScene();
     }
@@ -133,11 +134,12 @@ export class Game extends lib.Game {
 
         if (this.state.paused)return;
 
-        let meteorHitShip: boolean = false;
-
-        this.handleSpacePlayerInput();
-
         if (this.ship && this.ship.destroyed == false) {
+
+            let meteorHitShip: boolean = false;
+
+            this.handleSpacePlayerInput();
+
             for (let meteor of this.meteors) {
 
                 // Meteor hit ship?
@@ -172,69 +174,78 @@ export class Game extends lib.Game {
 
                     this.state.meteorHitShip();
 
+                    this.clearSky();
+
                     // Play ship explosion and move on.
                     this.gameTimeline.add(this.ship.destroy());
                     this.gameTimeline.call(this.handleShipDestroyed, null, this);
 
                     break;
-                } else {
-                    // Shot hit meteor?
-                    for (let shot of this.shots) {
-
-                        if (this.currentMeteor == null)break;
-
-                        let shotHitMeteor: boolean = false;
-
-                        // TODO: Can miss wiggling meteor?
-
-                        switch (this.currentMeteor.side) {
-                            case Sides.Top:
-                                if (shot.y <= this.currentMeteor.y) {
-                                    shotHitMeteor = true;
-                                }
-                                break;
-                            case Sides.Right:
-                                if (shot.x >= this.currentMeteor.x) {
-                                    shotHitMeteor = true;
-                                }
-                                break;
-                            case Sides.Bottom:
-                                if (shot.y >= this.currentMeteor.y) {
-                                    shotHitMeteor = true;
-                                }
-                                break;
-                            case Sides.Left:
-                                if (shot.x <= this.currentMeteor.x) {
-                                    shotHitMeteor = true;
-                                }
-                                break;
-                        }
-
-                        if (shotHitMeteor) {
-
-                            // Increase score, etc.
-                            this.state.meteorDestroyed(this.currentMeteor);
-
-                            shot.destroy();
-                            this.destroyMeteor(this.currentMeteor);
-                            this.currentMeteor = null;
-                            this.removeShot(shot);
-                            this.jumpToNextMeteor();
-
-                            // TODO: Play a sound?
-
-                            // TODO: Increase ship power? Research details...
-                        }
-
-                    }
                 }
+            }
+
+            // Shot hit meteor?
+            for (let shot of this.shots) {
+
+                if (this.currentMeteor == null)break;
+
+                let shotHitMeteor: boolean = false;
+
+                // TODO: Can miss wiggling meteor?
+
+                switch (this.currentMeteor.side) {
+                    case Sides.Top:
+                        if (shot.y <= this.currentMeteor.y) {
+                            shotHitMeteor = true;
+                        }
+                        break;
+                    case Sides.Right:
+                        if (shot.x >= this.currentMeteor.x) {
+                            shotHitMeteor = true;
+                        }
+                        break;
+                    case Sides.Bottom:
+                        if (shot.y >= this.currentMeteor.y) {
+                            shotHitMeteor = true;
+                        }
+                        break;
+                    case Sides.Left:
+                        if (shot.x <= this.currentMeteor.x) {
+                            shotHitMeteor = true;
+                        }
+                        break;
+                }
+
+                if (shotHitMeteor) {
+
+                    this.numMeteorsShot++;
+
+                    // Increase score, etc.
+                    this.state.meteorDestroyed(this.currentMeteor);
+
+                    this.destroyMeteor(this.currentMeteor);
+                    this.currentMeteor = null;
+
+                    this.destroyShot(shot);
+
+                    this.jumpToNextMeteor();
+
+                    // TODO: Play a sound?
+
+                    // TODO: Increase ship power? Research details...
+                }
+
             }
         }
     }
 
     private handlePlanetWarnComplete(): void {
-        // TODO: Fire a meteor from the left, top or right.
-        console.log('HERE COMES A METEOR!!!');
+
+        this.gameTimeline.clear();
+        this.gameTimeline = new TimelineMax({});
+
+        // Only one meteor when on the planet.
+        this.generateMeteors(1);
     }
 
     private handleSpacePlayerInput(): void {
@@ -298,7 +309,7 @@ export class Game extends lib.Game {
         }
     }
 
-    private removeShot(shot: Shot): void {
+    private destroyShot(shot: Shot): void {
 
         // Remove it from the lists.
 
@@ -315,21 +326,22 @@ export class Game extends lib.Game {
     private jumpToNextMeteor(): void {
         //console.log('NEXT METEOR!');
         if (this.meteors.length > 0) {
-            //console.log('TO: ', this.meteors[0].label)
             this.gameTimeline.seek(this.meteors[0].label);
         } else {
             // No more meteors, yay!
-            this.gameTimeline.seek(LABEL_SHOT_ALL_METEORS);
+            if (this.state.inSpace) {
+                this.leaveSpaceScene();
+            } else {
+                this.leavePlanetScene();
+            }
         }
     }
 
     private handleShipDestroyed(): void {
 
-        console.log('Ship Destroyed!!');
+        console.log('Ship Destroyed! Fuel left:', this.state.fuelLevel);
 
         this.state.allowShots = false;
-
-        this.clearSky();
 
         if (this.contains(this.ship)) {
             this.removeChild(this.ship);
@@ -356,12 +368,17 @@ export class Game extends lib.Game {
 
     private gotoSpaceScene(): void {
 
+        this.hidePlanet();
+
         // Slide down at center.
         this.gameTimeline.to(this.ship, SHIP_SPEED, {
             y: SHIP_REST_Y,
-            ease: Back.easeOut.config(.8),
+            ease: Linear.easeNone,
             onStart: () => {
                 if (this.shipIsNew) {
+                    this.shipIsNew = false;
+
+                    // TODO: Play extra ship creation animation? Research...
                     // TODO: Play ship entry sound then
                     // TODO: Play ship moving sound
                 } else {
@@ -373,8 +390,9 @@ export class Game extends lib.Game {
                 this.state.inSpace = true;
 
                 this.generateMeteors();
+                //this.gameTimeline.call(this.leaveSpaceScene, null, this, '+=.5');
             }
-        }, "+=.5");
+        });
 
         if (this.state.inSpace == false) {
             this.gameTimeline.add(this.planet.getExitAnimation());
@@ -384,95 +402,110 @@ export class Game extends lib.Game {
     private leaveSpaceScene(): void {
         this.state.allowShots = false;
 
-        if (this.state.inSpace) {
-            this.clearSky();
+        this.clearSky();
 
-            this.state.inSpace = false;
+        this.state.inSpace = false;
 
-            // Slide up to the top of the screen.
-            this.gameTimeline.to(this.ship, SHIP_SPEED, {
-                y: Math.abs(this.ship.topEdgeDistance),
-                ease: Linear.easeNone,
-                onComplete: () => {
-                    this.ship.openPort();
-                    this.gotoPlanetScene();
-                }
-            }, this.gameTimeline.time());
-        }
+        // Slide up to the top of the screen.
+        this.gameTimeline.to(this.ship, SHIP_SPEED, {
+            y: Math.abs(this.ship.topEdgeDistance),
+            ease: Linear.easeNone,
+            onComplete: () => {
+                this.ship.openPort();
+                this.gotoPlanetScene();
+            }
+        }, this.gameTimeline.time());
     }
 
     private gotoPlanetScene(): void {
 
-        if (this.state.inSpace == false) {
+        this.numMeteorsShot = 0;
 
-            this.planetLayer.addChild(this.planet);
+        this.planetLayer.addChild(this.planet);
 
-            this.gameTimeline.to(this.ship, SHIP_SPEED, {
-                y: SHIP_REST_Y,
-                ease: Linear.easeNone,
-                onComplete: () => {
-                    this.planet.run(this.ship);
-                    this.state.allowShots = true;
-                }
-            }, this.gameTimeline.time());
+        this.gameTimeline.to(this.ship, SHIP_SPEED, {
+            y: SHIP_REST_Y,
+            ease: Linear.easeNone,
+            onComplete: () => {
+                this.planet.run(this.ship);
+                this.state.allowShots = true;
+            }
+        }, this.gameTimeline.time());
 
-            this.gameTimeline.add(this.planet.getEntryAnimation());
-        }
+        this.gameTimeline.add(this.planet.getEntryAnimation());
     }
 
     private leavePlanetScene(): void {
 
         this.state.allowShots = false;
+        this.numMeteorsShot = 0;
 
-        if (this.state.inSpace == false) {
-            this.clearSky();
 
-            this.gameTimeline.to(this.ship, SHIP_SPEED, {
-                y: Math.abs(this.ship.topEdgeDistance),
-                ease: Linear.easeNone,
-                onComplete: () => {
-                    this.ship.closePort();
-                    this.gotoSpaceScene();
+        this.clearSky();
 
-                    this.planetLayer.removeChild(this.planet);
-                    this.planet.reset();
-                }
-            }, this.gameTimeline.time());
+        this.gameTimeline.to(this.ship, SHIP_SPEED, {
+            y: Math.abs(this.ship.topEdgeDistance),
+            ease: Linear.easeNone,
+            onStart: () => {
+                this.ship.closePort();
+            },
+            onComplete: () => {
+                this.gotoSpaceScene();
+            }
+        }, this.gameTimeline.time());
+    }
+
+    private hidePlanet(): void {
+
+        if (this.planetLayer.contains(this.planet)) {
+            this.planetLayer.removeChild(this.planet);
         }
+
+        this.planet.reset();
     }
 
     private clearSky(): void {
-        // Remove all the meteors
 
         for (let m of this.meteors) {
-            m.destroy();
-            if (this.meteorLayer.contains(m)) {
-                this.meteorLayer.removeChild(m);
-            }
+            this.destroyMeteor(m);
         }
 
         for (let s of this.shots) {
-            s.destroy();
-            if (this.shotsLayer.contains(s)) {
-                this.shotsLayer.removeChild(s);
-            }
+            this.destroyShot(s);
         }
 
         // TODO: Remove other stuff?
 
         this.meteors = [];
         this.shots = [];
+        this.currentMeteor = null;
 
         this.gameTimeline.clear();
+        this.gameTimeline = new TimelineMax({});
+
+        this.planet.clearSky();
+
+        console.log('--- SKY CLEARED ---');
     }
 
-    private generateMeteors(): void {
+    private generateMeteors(numToGenerate: number = 0): void {
 
         let count: number = 0;
 
-        this.gameTimeline.pause();
+        if (numToGenerate == 0) {
+            if (this.numMeteorsShot == 0) {
+                // First time generating meteors for the level.
+                numToGenerate = this.numMeteorsToGenerate;
+            } else {
+                // Fewer to generate.
+                // TODO: Research this to get formula.
+                numToGenerate = this.numMeteorsToGenerate - this.numMeteorsShot + 1;
+            }
+        }
 
-        while (count < this.numMeteorsToGenerate) {
+        //console.log('Generating', numToGenerate, 'meteors');
+
+        while (count < numToGenerate) {
             let meteor: Meteor = this.createMeteor();
 
             // Add a meteor and then a label to jump to if that meteor is shot.
@@ -486,15 +519,18 @@ export class Game extends lib.Game {
         }
 
         this.gameTimeline.add(LABEL_SHOT_ALL_METEORS);
-        this.gameTimeline.call(this.leaveSpaceScene, null, this, '+=.1');
-
-        this.gameTimeline.resume();
     }
 
     private createMeteor(): Meteor {
 
+        let side: number;
+
         // Pick a side randomly:
-        let side: number = _.sample([Sides.Top, Sides.Right, Sides.Bottom, Sides.Left]);
+        if (this.state.inSpace) {
+            side = _.sample([Sides.Top, Sides.Right, Sides.Bottom, Sides.Left]);
+        } else {
+            side = _.sample([Sides.Top, Sides.Right, Sides.Left]);
+        }
 
         let meteor: Meteor;
         let position: { x: number, y: number };
@@ -521,7 +557,8 @@ export class Game extends lib.Game {
                 break;
         }
 
-        meteor.set(position);
+        meteor.x = position.x;
+        meteor.y = position.y;
 
         this.meteorLayer.addChild(meteor);
 
