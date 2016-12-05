@@ -6,6 +6,8 @@ import {Ship} from "./Ship";
 import Rectangle = createjs.Rectangle;
 import {State} from "../State";
 
+export const SAUCER_DOCKED_EVENT: string = 'Saucer.SAUCER_DOCKED_EVENT';
+
 const PHONE_TOLERANCE: number = 5;
 const WIDTH: number = 65;
 const HEIGHT: number = 17;
@@ -60,7 +62,16 @@ export class Saucer extends lib.Saucer {
         }
     }
 
-    dock(): void {
+    private dock(): void {
+
+        if (this._docked == false && this.blowingUp == false) {
+            // Just docked. Send a keydown for the up arrow key to allow a shot at a coming meteor right away.
+            // TODO: Don't do this if in phone as the controller mode?
+            $('html').trigger(jQuery.Event('keydown'), { keycode: 38 });
+
+            this.dispatchEvent(SAUCER_DOCKED_EVENT);
+        }
+
         this.x = this.ship.x;
         this.y = this.ship.y;
         this._docked = true;
@@ -81,8 +92,8 @@ export class Saucer extends lib.Saucer {
                 },
                 onComplete: () => {
                     this.alpha = 1;
-                    this.blowingUp = false;
                     this.dock();
+                    this.blowingUp = false;
                 }
             });
         }
@@ -110,18 +121,13 @@ export class Saucer extends lib.Saucer {
 
         if (angle != ANGLE_NONE && this.beam.visible == false) {
 
-            distance = 1.5;
+            distance = 1.8;
 
             if (this.y < this.ship.y + this.ship.bottomDistance) {
                 this._inShip = true;
 
-                if (this.y < this.ship.y + 30) {
-                    if (this._docked == false) {
-                        // Just docked. Send a keydown for the up arrow key
-                        // TODO: Don't do this if in phone as the controller mode?
-                        $('html').trigger(jQuery.Event('keydown'), { keycode: 38 });
-                    }
-
+                if (this.y < this.ship.y + 40) {
+                    // Set docked to true but don't call dock().
                     this._docked = true;
                 } else {
                     this._docked = false;

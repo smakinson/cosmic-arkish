@@ -71,6 +71,10 @@ export class State extends createjs.EventDispatcher {
         this.fuelLevel = fuel > MAX_FUEL ? MAX_FUEL : fuel;
     }
 
+    saucerHit(): void {
+        // TODO: Determine how much fuel is lost. etc
+    }
+
     planetCleared(warningGiven: boolean): void {
 
         this.score += 1000;

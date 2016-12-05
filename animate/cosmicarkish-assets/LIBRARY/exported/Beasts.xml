@@ -1,4 +1,4 @@
-<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Beasts" itemID="58405974-00000319" linkageExportForAS="true" linkageClassName="Beasts" lastModified="1480617840">
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Beasts" itemID="58405974-00000319" linkageExportForAS="true" linkageClassName="Beasts" lastModified="1480958539">
   <persistentData>
     <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
   </persistentData>
@@ -9,9 +9,9 @@
           <frames>
             <DOMFrame index="0" keyMode="9728">
               <elements>
-                <DOMSymbolInstance libraryItemName="beast assets/beast 1" name="beast">
+                <DOMSymbolInstance libraryItemName="beast assets/beast 1" name="beast" selected="true">
                   <matrix>
-                    <Matrix tx="-8.5" ty="-9"/>
+                    <Matrix ty="-5.5"/>
                   </matrix>
                   <transformationPoint>
                     <Point/>

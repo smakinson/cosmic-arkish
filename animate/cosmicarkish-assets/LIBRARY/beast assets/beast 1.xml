@@ -1,24 +1,34 @@
-<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="beast assets/beast 1" itemID="58405997-0000031f" lastModified="1480612313">
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="beast assets/beast 1" itemID="58405997-0000031f" lastModified="1480959532">
+  <persistentData>
+    <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
+  </persistentData>
   <timeline>
-    <DOMTimeline name="beast 1">
+    <DOMTimeline name="beast 1" currentFrame="7" guides='&lt;guidelines&gt;&lt;guideline direction="h"&gt;2&lt;/guideline&gt;&lt;/guidelines&gt;'>
       <layers>
-        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+        <DOMLayer name="Layer 2" color="#9933CC" current="true" isSelected="true">
           <frames>
-            <DOMFrame index="0" keyMode="9728">
+            <DOMFrame index="0" duration="4" keyMode="9728">
               <elements>
-                <DOMShape selected="true" isFloating="true">
+                <DOMSymbolInstance libraryItemName="Tween 6" selected="true" symbolType="graphic" loop="loop">
                   <matrix>
-                    <Matrix tx="-15" ty="-2.05"/>
+                    <Matrix ty="-13.25"/>
                   </matrix>
-                  <fills>
-                    <FillStyle index="1">
-                      <SolidColor color="#FFFF99"/>
-                    </FillStyle>
-                  </fills>
-                  <edges>
-                    <Edge fillStyle1="1" edges="!300 41S2|640 41!640 41|640 221!640 221|300 221!300 221|300 41"/>
-                  </edges>
-                </DOMShape>
+                  <transformationPoint>
+                    <Point/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="4" duration="4" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="Tween 6" selected="true" symbolType="graphic" centerPoint3DY="-13.3" loop="loop">
+                  <matrix>
+                    <Matrix a="0.658538818359375" ty="-13.25"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
               </elements>
             </DOMFrame>
           </frames>

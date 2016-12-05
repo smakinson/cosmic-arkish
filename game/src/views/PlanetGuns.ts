@@ -52,6 +52,7 @@ export class PlanetGuns extends lib.PlanetGuns {
         let laserPosition: Point = this.localToGlobal(this.laser.x, this.laser.y);
         if (this.laser.visible) {
             if (laserPosition.y >= this.saucer.y - 5 && laserPosition.y <= this.saucer.y + this.saucer.getHeight()) {
+                console.log('---> BLASTED the saucer! <---');
                 this.dispatchEvent(SAUCER_HIT_EVENT);
             }
         }
