@@ -18,6 +18,11 @@ export class State extends createjs.EventDispatcher {
     fuelLevel: number;
     score: number;
 
+    private _beastFrameNumber: number;  // Frame numbers are 0 based.
+    get beastFrameNumber():number{
+        return this._beastFrameNumber;
+    }
+
     static getInstance(): State {
 
         if (State.instance === null) {
@@ -54,6 +59,18 @@ export class State extends createjs.EventDispatcher {
         this.fuelLevel = fuel;
 
         // TODO: Show score & fuel on screen and update them.
+    }
+
+    nextLevel(): void {
+
+
+        // The planet beasts change every other level.
+        if (this.level % 2 == 0) {
+            // Frame numbers are 0 based.
+            this._beastFrameNumber++;
+        }
+
+        this.level++;
     }
 
     shotFiredAtMeteor(): void {
@@ -93,6 +110,7 @@ export class State extends createjs.EventDispatcher {
         this.level = 0;
         this.fuelLevel = MAX_FUEL;
         this.score = 0;
+        this._beastFrameNumber = -1;
     }
 
 }

@@ -5,12 +5,16 @@ import {
 import {Ship} from "./Ship";
 import Rectangle = createjs.Rectangle;
 import {State} from "../State";
+import {Beast} from "./Beast";
+import Point = createjs.Point;
+import {BeastEvent} from "../events/BeastEvent";
 
 export const SAUCER_DOCKED_EVENT: string = 'Saucer.SAUCER_DOCKED_EVENT';
 
 const PHONE_TOLERANCE: number = 5;
 const WIDTH: number = 65;
 const HEIGHT: number = 17;
+const BEAM_SPEED: number = 2;
 
 export class Saucer extends lib.Saucer {
 
@@ -32,14 +36,19 @@ export class Saucer extends lib.Saucer {
     private blowingUp: boolean = false;
     private blowingUpTween: TweenMax = new TweenMax(this, 0, {});
 
+    private beamingABeast: boolean = false;
+    //private beamingUpTween: TweenMax = new TweenMax(this, 0, {});
+    private beastBeingBeamedUp: Beast;
+
     private state: State = State.getInstance();
     private playerInput: PlayerInput = PlayerInput.getInstance();
 
     // on the stage:
     private saucer: MovieClip;
     private beam: MovieClip;
+    private beamBeast: MovieClip;
 
-    constructor(public ship: Ship, public flyZone: Rectangle) {
+    constructor(public ship: Ship, public flyZone: Rectangle, public beasts: Array<Beast>) {
         super();
 
         this.dock();
@@ -47,6 +56,7 @@ export class Saucer extends lib.Saucer {
         TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
 
         this.beam.visible = false;
+        this.beamBeast.visible = false;
     }
 
     destroy(): void {
@@ -65,10 +75,6 @@ export class Saucer extends lib.Saucer {
     private dock(): void {
 
         if (this._docked == false && this.blowingUp == false) {
-            // Just docked. Send a keydown for the up arrow key to allow a shot at a coming meteor right away.
-            // TODO: Don't do this if in phone as the controller mode?
-            $('html').trigger(jQuery.Event('keydown'), { keycode: 38 });
-
             this.dispatchEvent(SAUCER_DOCKED_EVENT);
         }
 
@@ -101,6 +107,42 @@ export class Saucer extends lib.Saucer {
         return this.blowingUpTween;
     }
 
+    private beamUpBeast(beast: Beast): void {
+
+        this.beamingABeast = true;
+
+        let localBeastPosition: Point = beast.localToGlobal(beast.x, beast.y)
+        localBeastPosition = this.globalToLocal(localBeastPosition.x, localBeastPosition.y);
+
+        beast.reactToBeamTouch();
+
+        this.beamBeast.y = localBeastPosition.y;
+        this.beamBeast.visible = true;
+        this.beastBeingBeamedUp = beast;
+    }
+
+    private captureBeastInBeam(): void {
+        // TODO
+
+        this.beamBeast.visible = false;
+        this.beamingABeast = false;
+
+        this.beastBeingBeamedUp.markAsCaptured();
+        this.beastBeingBeamedUp = null;
+
+        this.dispatchEvent(new BeastEvent(BeastEvent.CAPTURED, this.beastBeingBeamedUp));
+    }
+
+    private dropBeastInBeam(): void {
+        // TODO
+
+        this.beamBeast.visible = false;
+        this.beamingABeast = false;
+
+        this.beastBeingBeamedUp.reactToBeamRelease();
+        this.beastBeingBeamedUp = null;
+    }
+
     private handleGameTick(): void {
 
         if (this.state.paused || this.blowingUp)return;
@@ -113,10 +155,34 @@ export class Saucer extends lib.Saucer {
         if (this.inShip == false && this.playerInput.beamOn) {
             this.beam.visible = true;
 
-            // TODO: Play beam sound
-            // TODO: Check for alien
+            if (this.beamingABeast) {   // The beast is in the beam the is on.
+                // TODO: Play the beaming sound.
+                this.beamBeast.y -= BEAM_SPEED;
+                this.beastBeingBeamedUp.y -= BEAM_SPEED;    // Keep the beast at the same height.
+
+                // Check to see if its in the saucer yet
+                if (this.beamBeast.y <= this.beam.y - 5) {
+                    this.captureBeastInBeam();
+                }
+            } else {
+                let globalBeamPosition: Point = this.localToGlobal(this.beam.x, this.beam.y);
+
+                // Check to see if the beam caught a beast.
+                for (let beast of this.beasts) {
+                    if (beast.visible && beast.captured == false) {
+                        if (beast.x >= globalBeamPosition.x - 15 && beast.x <= globalBeamPosition.x + 15) {
+                            this.beamUpBeast(beast);
+                            break;
+                        }
+                    }
+                }
+            }
         } else {
             this.beam.visible = false;
+
+            if (this.beastBeingBeamedUp) {  // A beast was dropped.
+                this.dropBeastInBeam();
+            }
         }
 
         if (angle != ANGLE_NONE && this.beam.visible == false) {
@@ -127,6 +193,15 @@ export class Saucer extends lib.Saucer {
                 this._inShip = true;
 
                 if (this.y < this.ship.y + 40) {
+
+                    if (this._docked == false) {
+                        // Just docked. Send a keydown for the up arrow key to allow a shot at a coming meteor right away.
+                        // TODO: Don't do this if in phone as the controller mode?
+                        $('html').trigger(jQuery.Event('keydown'), { keycode: 38 });
+
+                        this.dispatchEvent(SAUCER_DOCKED_EVENT);
+                    }
+
                     // Set docked to true but don't call dock().
                     this._docked = true;
                 } else {

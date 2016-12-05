@@ -1,9 +1,9 @@
-<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="beast assets/beast 1" itemID="58405997-0000031f" lastModified="1480959532">
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="beast assets/beast 1" itemID="58405997-0000031f" lastModified="1480967718">
   <persistentData>
     <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
   </persistentData>
   <timeline>
-    <DOMTimeline name="beast 1" currentFrame="7" guides='&lt;guidelines&gt;&lt;guideline direction="h"&gt;2&lt;/guideline&gt;&lt;/guidelines&gt;'>
+    <DOMTimeline name="beast 1" guides='&lt;guidelines&gt;&lt;guideline direction="h"&gt;2&lt;/guideline&gt;&lt;/guidelines&gt;'>
       <layers>
         <DOMLayer name="Layer 2" color="#9933CC" current="true" isSelected="true">
           <frames>
@@ -11,7 +11,7 @@
               <elements>
                 <DOMSymbolInstance libraryItemName="Tween 6" selected="true" symbolType="graphic" loop="loop">
                   <matrix>
-                    <Matrix ty="-13.25"/>
+                    <Matrix a="1.01626586914062" d="1.01617431640625" ty="-13.25"/>
                   </matrix>
                   <transformationPoint>
                     <Point/>

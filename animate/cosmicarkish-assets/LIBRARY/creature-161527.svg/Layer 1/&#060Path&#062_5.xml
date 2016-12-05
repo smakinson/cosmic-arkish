@@ -1,0 +1,30 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="creature-161527.svg/Layer 1/&amp;#060Path&amp;#062_5" itemID="5845c5fa-00000633" lastModified="1480967674">
+  <timeline>
+    <DOMTimeline name="&amp;#060Path&amp;#062_5">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMShape selected="true" isDrawingObject="true">
+                  <fills>
+                    <FillStyle index="1">
+                      <SolidColor color="#2C5AA0"/>
+                    </FillStyle>
+                  </fills>
+                  <edges>
+                    <Edge fillStyle0="1" edges="!41 54|0 69!0 69|70 74!70 74|71 0!71 0|41 54"/>
+                    <Edge cubics="!41 54(;41,54 0,69 0,69p41 54q0 69);"/>
+                    <Edge cubics="!0 69(;0,69 70,74 70,74q0 69 70 74);"/>
+                    <Edge cubics="!70 74(;70,74 71,0 71,0p70 74 71 0);"/>
+                    <Edge cubics="!71 0(;71,0 41,54 41,54q71 0 41 54);"/>
+                  </edges>
+                </DOMShape>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

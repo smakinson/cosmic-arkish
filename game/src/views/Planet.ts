@@ -104,20 +104,19 @@ export class Planet extends lib.Planet {
     }
 
     private createSaucer(): void {
-        this._saucer = new Saucer(this.ship, this.saucerArea);
+        this._saucer = new Saucer(this.ship, this.saucerArea, [this.beast1, this.beast2]);
         this.addChildAt(this._saucer, 0);
         this.handleSaucerDockedListener = this._saucer.on(SAUCER_DOCKED_EVENT, this.handleSaucerDocked, this);
     }
 
     private createGuns(): void {
         // TODO: add guns on proper levels
-        if (this.state.level >= 1) {
+        if (this.state.level > 1) {
             this.guns = new PlanetGuns(this._saucer, this.saucerArea);
             this.addChildAt(this.guns, 1);
             this.handleSaucerHitListener = this.guns.on(SAUCER_HIT_EVENT, this.handleSaucerHit, this);
+            this.guns.run();
         }
-
-        this.guns.run();
     }
 
     private createBeasts(): void {
@@ -164,14 +163,14 @@ export class Planet extends lib.Planet {
     }
 
     pause(): void {
-        this.guns.pause();
+        if(this.guns)this.guns.pause();
         this.beast1.pause();
         this.beast2.pause();
         // TODO
     }
 
     resume(): void {
-        this.guns.resume();
+        if(this.guns)this.guns.resume();
         this.beast1.resume();
         this.beast2.resume();
         // TODO
@@ -186,9 +185,9 @@ export class Planet extends lib.Planet {
 
         this.saucerArea = new Rectangle(xOffset, shipBottomY, CANVAS_WIDTH - xOffset * 2, CANVAS_HEIGHT - shipBottomY - GROUND_HEIGHT - 50);
 
+        this.createBeasts();    // Create the beasts first so they can be handed to the saucer.
         this.createSaucer();
         this.createGuns();
-        this.createBeasts();
 
         this.handleShipDestroyedListener = this.ship.on(SHIP_DESTROYED_EVENT, this.handleShipDestroyed, this);
 
@@ -202,6 +201,9 @@ export class Planet extends lib.Planet {
         this.destroySaucer();
         this.destroyGuns();
         this.destroyBeasts();
+
+        this.beast1Captured = false;
+        this.beast2Captured = false;
 
         if (this.ship) {
             this.ship.off(SHIP_DESTROYED_EVENT, this.handleShipDestroyedListener);

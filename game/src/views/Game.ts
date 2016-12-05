@@ -85,7 +85,7 @@ export class Game extends lib.Game {
     }
 
     private nextLevel(): void {
-        this.state.level++;
+        this.state.nextLevel();
 
         // TODO: Calculate this based on level.
         this.numMeteorsToGenerate = 1;

@@ -1,4 +1,4 @@
-<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="saucer beam asset" itemID="583f0afc-0000065f" lastModified="1480957998">
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="saucer beam asset" itemID="583f0afc-0000065f" lastModified="1480970644">
   <persistentData>
     <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
   </persistentData>
@@ -12,15 +12,19 @@
                 <DOMShape>
                   <fills>
                     <FillStyle index="1">
-                      <SolidColor color="#FFFFFF"/>
+                      <SolidColor color="#FFFFFF" alpha="0.498039215686275"/>
                     </FillStyle>
                   </fills>
                   <edges>
-                    <Edge fillStyle1="1" edges="!1027 76/1175 8491!1175 8491/520 8493!520 8493/544 77!544 77[620 26 814 29!814 29[1004 32 1027 76"/>
-                    <Edge cubics="!1027 76(;1027,76 1175,8491 1175,8491q1027 76p1175 8491);"/>
-                    <Edge cubics="!1175 8491(;1175,8491 520,8493 520,8493q1175 8491p520 8493);"/>
-                    <Edge cubics="!520 8493(;520,8493 544,77 544,77q520 8493p544 77);"/>
-                    <Edge cubics="!544 77(;649,7 998,20 1027,76q544 77Q620 26q814 29Q1004 32q1027 76);"/>
+                    <Edge fillStyle1="1" edges="!-250 0/250 0!250 0/330 8400!330 8400|-330 8400!-330 8400/-250 0"/>
+                    <Edge cubics="!180 47(;180,47 328,8462 328,8462q180 47 328 8462);"/>
+                    <Edge cubics="!-327 8464(;-327,8464 -303,48 -303,48q-327 8464 -303 48);"/>
+                    <Edge cubics="!328 8462(;328,8462 -327,8464 -327,8464q328 8462 -327 8464);"/>
+                    <Edge cubics="!-303 48(;-303,48 180,47 180,47q-303 48 180 47);"/>
+                    <Edge cubics="!-5649 3839(;-5649,3839 -5149,3839 -5149,3839q-5649 3839p-5149 3839);"/>
+                    <Edge cubics="!-5069 12239(;-5069,12239 -5729,12239 -5729,12239q-5069 12239 -5729 12239);"/>
+                    <Edge cubics="!-5729 12239(;-5729,12239 -5649,3839 -5649,3839q-5729 12239p-5649 3839);"/>
+                    <Edge cubics="!-5149 3839(;-5149,3839 -5069,12239 -5069,12239q-5149 3839p-5069 12239);"/>
                   </edges>
                 </DOMShape>
               </elements>
