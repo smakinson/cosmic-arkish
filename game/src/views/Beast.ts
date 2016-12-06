@@ -48,7 +48,7 @@ export class Beast extends lib.Beasts {
 
     constructor(public side: Sides, public saucer: Saucer) {
         super();
-
+        console.log('TF:', this.totalFrames)
         // TODO: Pick frame based on the current level.
         this.gotoAndStop(this.state.beastFrameNumber);
 

@@ -5,7 +5,7 @@ import {PlayerInput} from "../io/PlayerInput";
 import {Shot} from "./Shot";
 import {State} from "../State";
 import Rectangle = createjs.Rectangle;
-import {Planet, WARN_COMPLETE_EVENT} from "./Planet";
+import {Planet, WARN_COMPLETE_EVENT, ALL_BEASTS_CAPTURED_EVENT} from "./Planet";
 
 export enum Sides { Right, Left, Bottom, Top, None }
 
@@ -44,10 +44,10 @@ export class Game extends lib.Game {
     private ship: Ship;
     private shipIsNew: boolean = true;
 
-    private handlePlanetWarnCompleteListener: Function;
-
     private numMeteorsToGenerate: number;
 
+    private planetWarnCompleteListener: Function;
+    private allBeastsCapturedListener: Function;
     private tickerListener: Function;
 
     private playerInput: PlayerInput = PlayerInput.getInstance();
@@ -56,9 +56,7 @@ export class Game extends lib.Game {
     constructor() {
         super();
 
-        createjs.Ticker.framerate = 60;
-
-        this.gameTimeline = new TimelineMax({});
+        this.createGameTimeline();
 
         this.meteorLayer = new Container();
         this.shotsLayer = new Container();
@@ -72,9 +70,15 @@ export class Game extends lib.Game {
 
     destroy(): void {
 
-        this.planet.off(WARN_COMPLETE_EVENT, this.handlePlanetWarnCompleteListener);
-
         this.clearSky();
+
+        if (this.tickerListener) {
+            createjs.Ticker.off('tick', this.tickerListener);
+            this.tickerListener = null;
+        }
+
+        this.planet.off(WARN_COMPLETE_EVENT, this.planetWarnCompleteListener);
+        this.planet.off(ALL_BEASTS_CAPTURED_EVENT, this.allBeastsCapturedListener);
 
         this.planet.destroy();
         this.ship.destroy();
@@ -88,18 +92,23 @@ export class Game extends lib.Game {
         this.gotoSpaceScene();
     }
 
+    private createGameTimeline(): void {
+        //this.gameTimeline.clear();
+        this.gameTimeline = new TimelineMax({});
+    }
+
     private nextLevel(): void {
         this.state.nextLevel();
+        this.planet.nextLevel();
 
         // TODO: Calculate this based on level.
         this.numMeteorsToGenerate = 1;
-
-        this.gotoSpaceScene();
     }
 
     private createPlanet(): void {
         this.planet = new Planet();
-        this.handlePlanetWarnCompleteListener = this.planet.on(WARN_COMPLETE_EVENT, this.handlePlanetWarnComplete, this);
+        this.planetWarnCompleteListener = this.planet.on(WARN_COMPLETE_EVENT, this.handlePlanetWarnComplete, this);
+        this.allBeastsCapturedListener = this.planet.on(ALL_BEASTS_CAPTURED_EVENT, this.handleAllBeastsCaptured, this);
     }
 
     private createShip(): void {
@@ -116,6 +125,7 @@ export class Game extends lib.Game {
         this.createPlanet();
 
         this.nextLevel();
+        this.gotoSpaceScene();
 
         this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
     }
@@ -235,8 +245,6 @@ export class Game extends lib.Game {
                     this.jumpToNextMeteor();
 
                     // TODO: Play a sound?
-
-                    // TODO: Increase ship power? Research details...
                 }
 
             }
@@ -245,11 +253,17 @@ export class Game extends lib.Game {
 
     private handlePlanetWarnComplete(): void {
 
-        this.gameTimeline.clear();
-        this.gameTimeline = new TimelineMax({});
+        //this.createGameTimeline();
 
         // Only one meteor when on the planet.
         this.generateMeteors(1);
+    }
+
+    private handleAllBeastsCaptured(): void {
+        // TODO
+        //this.createGameTimeline();
+
+        this.leavePlanetScene();
     }
 
     private handleSpacePlayerInput(): void {
@@ -367,7 +381,12 @@ export class Game extends lib.Game {
 
         console.log('GAME OVER!');
 
-        createjs.Ticker.off('tick', this.tickerListener);
+        this.clearSky();
+
+        if (this.tickerListener) {
+            createjs.Ticker.off('tick', this.tickerListener);
+            this.tickerListener = null;
+        }
 
         // TODO: Play ending scene
     }
@@ -455,6 +474,11 @@ export class Game extends lib.Game {
                 this.ship.closePort();
             },
             onComplete: () => {
+
+                if (this.planet.isClear) {
+                    this.nextLevel();
+                }
+
                 this.gotoSpaceScene();
             }
         }, this.gameTimeline.time());
@@ -485,8 +509,7 @@ export class Game extends lib.Game {
         this.shots = [];
         this.currentMeteor = null;
 
-        this.gameTimeline.clear();
-        this.gameTimeline = new TimelineMax({});
+        this.createGameTimeline();
 
         this.planet.clearSky();
 

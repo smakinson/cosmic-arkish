@@ -5,6 +5,7 @@ import {CANVAS_HEIGHT, CANVAS_WIDTH, Sides} from "./Game";
 import {Ship, SHIP_DESTROYED_EVENT} from "./Ship";
 import {State} from "../State";
 import {Beast} from "./Beast";
+import {BeastEvent} from "../events/BeastEvent";
 
 const GROUND_HEIGHT: number = 40;
 
@@ -18,6 +19,11 @@ export class Planet extends lib.Planet {
         return this._destroyed;
     }
 
+    private _warningGiven: boolean = false;
+    get warningGiven(): boolean {
+        return this._warningGiven;
+    }
+
     private guns: PlanetGuns;
     private _saucer: Saucer;
 
@@ -28,16 +34,21 @@ export class Planet extends lib.Planet {
         return false;
     }
 
+    get isClear(): boolean {
+        return this.beastLeftCaptured && this.beastRightCaptured;
+    }
+
     private saucerArea: Rectangle;
     private ship: Ship;
-    private beast1: Beast;
-    private beast1Captured: boolean;
-    private beast2: Beast;
-    private beast2Captured: boolean;
+    private beastLeft: Beast;
+    private beastLeftCaptured: boolean;
+    private beastRight: Beast;
+    private beastRightCaptured: boolean;
 
-    private handleSaucerDockedListener: Function;
-    private handleSaucerHitListener: Function;
-    private handleShipDestroyedListener: Function;
+    private saucerDockedListener: Function;
+    private saucerHitListener: Function;
+    private shipDestroyedListener: Function;
+    private beastCapturedListener: Function;
 
     private warnTween: TweenMax = new TweenMax(this, 0, {});
 
@@ -64,7 +75,9 @@ export class Planet extends lib.Planet {
 
     private destroySaucer(): void {
         if (this._saucer) {
-            this._saucer.off(SAUCER_DOCKED_EVENT, this.handleSaucerDockedListener);
+            this._saucer.off(SAUCER_DOCKED_EVENT, this.saucerDockedListener);
+            this._saucer.off(BeastEvent.CAPTURED, this.beastCapturedListener);
+
             this._saucer.destroy();
             if (this.contains(this._saucer)) {
                 this.removeChild(this._saucer);
@@ -75,7 +88,8 @@ export class Planet extends lib.Planet {
 
     private destroyGuns(): void {
         if (this.guns) {
-            this.guns.off(SAUCER_HIT_EVENT, this.handleSaucerHitListener);
+            this.guns.off(SAUCER_HIT_EVENT, this.saucerHitListener);
+
             this.guns.destroy();
             if (this.contains(this.guns)) {
                 this.removeChild(this.guns);
@@ -85,16 +99,16 @@ export class Planet extends lib.Planet {
     }
 
     private destroyBeasts(): void {
-        if (this.beast1) {
-            this.beast1.destroy();
-            if (this.contains(this.beast1)) {
-                this.removeChild(this.beast1);
+        if (this.beastLeft) {
+            this.beastLeft.destroy();
+            if (this.contains(this.beastLeft)) {
+                this.removeChild(this.beastLeft);
             }
         }
-        if (this.beast2) {
-            this.beast2.destroy();
-            if (this.contains(this.beast2)) {
-                this.removeChild(this.beast2);
+        if (this.beastRight) {
+            this.beastRight.destroy();
+            if (this.contains(this.beastRight)) {
+                this.removeChild(this.beastRight);
             }
         }
     }
@@ -104,9 +118,11 @@ export class Planet extends lib.Planet {
     }
 
     private createSaucer(): void {
-        this._saucer = new Saucer(this.ship, this.saucerArea, [this.beast1, this.beast2]);
+        this._saucer = new Saucer(this.ship, this.saucerArea, [this.beastLeft, this.beastRight]);
         this.addChildAt(this._saucer, 0);
-        this.handleSaucerDockedListener = this._saucer.on(SAUCER_DOCKED_EVENT, this.handleSaucerDocked, this);
+
+        this.saucerDockedListener = this._saucer.on(SAUCER_DOCKED_EVENT, this.handleSaucerDocked, this);
+        this.beastCapturedListener = this._saucer.on(BeastEvent.CAPTURED, this.handleBeastCaptured, this);
     }
 
     private createGuns(): void {
@@ -114,23 +130,23 @@ export class Planet extends lib.Planet {
         if (this.state.level > 1) {
             this.guns = new PlanetGuns(this._saucer, this.saucerArea);
             this.addChildAt(this.guns, 1);
-            this.handleSaucerHitListener = this.guns.on(SAUCER_HIT_EVENT, this.handleSaucerHit, this);
+            this.saucerHitListener = this.guns.on(SAUCER_HIT_EVENT, this.handleSaucerHit, this);
             this.guns.run();
         }
     }
 
     private createBeasts(): void {
-        this.beast1 = new Beast(Sides.Left, this._saucer);
-        this.beast1.x = 200;
+        this.beastLeft = new Beast(Sides.Left, this._saucer);
+        this.beastLeft.x = 200;
 
-        this.beast2 = new Beast(Sides.Right, this._saucer);
-        this.beast2.x = CANVAS_WIDTH - this.beast1.x;
+        this.beastRight = new Beast(Sides.Right, this._saucer);
+        this.beastRight.x = CANVAS_WIDTH - this.beastLeft.x;
 
-        this.ground.addChild(this.beast1);
-        this.ground.addChild(this.beast2);
+        this.ground.addChild(this.beastLeft);
+        this.ground.addChild(this.beastRight);
 
-        this.beast1.run(this.beast2);
-        this.beast2.run(this.beast1);
+        this.beastLeft.run(this.beastRight);
+        this.beastRight.run(this.beastLeft);
     }
 
     getEntryAnimation(): TweenMax {
@@ -148,9 +164,9 @@ export class Planet extends lib.Planet {
     }
 
     private handleSaucerDocked(): void {
-        if (this.beast1Captured && this.beast2Captured) {
+        if (this.beastLeftCaptured && this.beastRightCaptured) {
 
-            // TODO: Anything else here?
+            this.state.planetCleared(this._warningGiven);
 
             this.dispatchEvent(ALL_BEASTS_CAPTURED_EVENT);
         }
@@ -164,17 +180,34 @@ export class Planet extends lib.Planet {
         // TODO:  Research if they are both lost if this was a return to the planet after one was collected.
     }
 
+    private handleShipDestroyed(): void {
+        this.destroySaucer();
+    }
+
+    private handleBeastCaptured(event: BeastEvent): void {
+        if (event.beast.side == Sides.Left) {
+            this.beastLeftCaptured = true;
+        } else if (event.beast.side == Sides.Right) {
+            this.beastRightCaptured = true;
+        }
+    }
+
+    nextLevel(): void {
+        this.beastLeftCaptured = false;
+        this.beastRightCaptured = false;
+    }
+
     pause(): void {
-        if(this.guns)this.guns.pause();
-        this.beast1.pause();
-        this.beast2.pause();
+        if (this.guns) this.guns.pause();
+        this.beastLeft.pause();
+        this.beastRight.pause();
         // TODO
     }
 
     resume(): void {
-        if(this.guns)this.guns.resume();
-        this.beast1.resume();
-        this.beast2.resume();
+        if (this.guns) this.guns.resume();
+        this.beastLeft.resume();
+        this.beastRight.resume();
         // TODO
     }
 
@@ -191,7 +224,7 @@ export class Planet extends lib.Planet {
         this.createSaucer();
         this.createGuns();
 
-        this.handleShipDestroyedListener = this.ship.on(SHIP_DESTROYED_EVENT, this.handleShipDestroyed, this);
+        this.shipDestroyedListener = this.ship.on(SHIP_DESTROYED_EVENT, this.handleShipDestroyed, this);
 
         this.startWarningTimer();
 
@@ -204,13 +237,11 @@ export class Planet extends lib.Planet {
         this.destroyGuns();
         this.destroyBeasts();
 
-        this.beast1Captured = false;
-        this.beast2Captured = false;
-
         if (this.ship) {
-            this.ship.off(SHIP_DESTROYED_EVENT, this.handleShipDestroyedListener);
+            this.ship.off(SHIP_DESTROYED_EVENT, this.shipDestroyedListener);
         }
 
+        this._warningGiven = false;
         // TODO: More to reset?
     }
 
@@ -220,10 +251,6 @@ export class Planet extends lib.Planet {
         let warningDelay: number = 300;
 
         this.warnTween = TweenMax.delayedCall(warningDelay, this.handleWarningTime, [], this);
-    }
-
-    private handleShipDestroyed(): void {
-        this.destroySaucer();
     }
 
     private handleWarningTime(): void {

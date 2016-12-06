@@ -63,11 +63,11 @@ export class State extends createjs.EventDispatcher {
 
     nextLevel(): void {
 
-
         // The planet beasts change every other level.
         if (this.level % 2 == 0) {
             // Frame numbers are 0 based.
             this._beastFrameNumber++;
+
         }
 
         this.level++;

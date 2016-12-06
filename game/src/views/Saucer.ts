@@ -130,9 +130,10 @@ export class Saucer extends lib.Saucer {
         this.beamingABeast = false;
 
         this.beastBeingBeamedUp.markAsCaptured();
-        this.beastBeingBeamedUp = null;
 
         this.dispatchEvent(new BeastEvent(BeastEvent.CAPTURED, this.beastBeingBeamedUp));
+
+        this.beastBeingBeamedUp = null;
     }
 
     private dropBeastInBeam(): void {
