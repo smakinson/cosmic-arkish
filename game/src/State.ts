@@ -19,7 +19,7 @@ export class State extends createjs.EventDispatcher {
     score: number;
 
     private _beastFrameNumber: number;  // Frame numbers are 0 based.
-    get beastFrameNumber():number{
+    get beastFrameNumber(): number {
         return this._beastFrameNumber;
     }
 
@@ -67,7 +67,6 @@ export class State extends createjs.EventDispatcher {
         if (this.level % 2 == 0) {
             // Frame numbers are 0 based.
             this._beastFrameNumber++;
-
         }
 
         this.level++;
@@ -111,6 +110,10 @@ export class State extends createjs.EventDispatcher {
         this.fuelLevel = MAX_FUEL;
         this.score = 0;
         this._beastFrameNumber = -1;
+    }
+
+    restartBeastFrameNumber(): void {
+        this._beastFrameNumber = 0;
     }
 
 }

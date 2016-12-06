@@ -1,17 +1,21 @@
 import {State} from "../State";
-import {Sides, CANVAS_CENTER_X, CANVAS_WIDTH} from "./Game";
+import {Sides, CANVAS_WIDTH} from "./Game";
 import {Saucer} from "./Saucer";
 
 const EDGE_PAD: number = 50;
-const BEAST_PAD: number = 30;
-const SPEED: number = 5;
-const FALL_SPEED: number = 8;
+const BEAST_PAD: number = 35;
+const SPEED: number = 6;
+const FALL_SPEED: number = 20;
 
 export class Beast extends lib.Beasts {
 
     private _destroyed: boolean = false;
     get destroyed(): boolean {
         return this._destroyed;
+    }
+
+    get onGround(): boolean {
+        return this.y == 0;
     }
 
     private otherBeast: Beast;
@@ -26,7 +30,6 @@ export class Beast extends lib.Beasts {
 
     private caughtInBeam: boolean = false;
     private droppedFromBeam: boolean = false;
-    private yPositionBeforeBeam: number;
 
     private _width: number;  // The values for this are set on the timeline.
     get width(): number {
@@ -44,19 +47,18 @@ export class Beast extends lib.Beasts {
 
     // on the stage:
     private beast: MovieClip;
-    private beamBeast: MovieClip;
 
     constructor(public side: Sides, public saucer: Saucer) {
         super();
-        console.log('TF:', this.totalFrames)
-        // TODO: Pick frame based on the current level.
+
+        // Show the appropriate beast for the level.
+        if (this.state.beastFrameNumber >= this.totalFrames) {
+            this.state.restartBeastFrameNumber();
+        }
         this.gotoAndStop(this.state.beastFrameNumber);
 
         this.direction = this.side == Sides.Left ? SPEED : -SPEED;
-
         this.countTo = this.side == Sides.Left ? 25 : 40;
-
-        this.beamBeast.visible = false;
     }
 
     destroy(): void {
@@ -83,10 +85,9 @@ export class Beast extends lib.Beasts {
         if (this.droppedFromBeam) {
             this.y += FALL_SPEED;
 
-            if (this.y >= this.yPositionBeforeBeam) {
-                this.y = this.yPositionBeforeBeam;
+            if (this.y >= 0) {
+                this.y = 0;
                 this.droppedFromBeam = false;
-                this.beamBeast.visible = false;
                 this.beast.visible = true;
             }
         } else {
@@ -137,6 +138,10 @@ export class Beast extends lib.Beasts {
             }
 
             // TODO: Avoid saucer beam.
+
+            // face the correct direction for the movement.
+            this.scaleX = clampedX < this.x ? -1 : 1;
+
             this.x = clampedX;
             this.count++;
         }
@@ -176,7 +181,6 @@ export class Beast extends lib.Beasts {
 
         this.caughtInBeam = true;
         this.visible = false;
-        this.yPositionBeforeBeam = this.y;
     }
 
     reactToBeamRelease(): void {
@@ -188,7 +192,6 @@ export class Beast extends lib.Beasts {
         this.droppedFromBeam = true;
 
         this.beast.visible = false;
-        this.beamBeast.visible = true;
         this.visible = true;
     }
 

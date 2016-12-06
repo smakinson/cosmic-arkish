@@ -256,6 +256,7 @@ export class Planet extends lib.Planet {
     private handleWarningTime(): void {
         this.warnTween.kill();
         this.ship.warn();
+        this._saucer.warn();
 
         // TODO: Determine this delay by the level?
         let warningDelay: number = 3;

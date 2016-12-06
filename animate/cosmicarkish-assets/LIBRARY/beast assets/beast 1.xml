@@ -3,13 +3,13 @@
     <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
   </persistentData>
   <timeline>
-    <DOMTimeline name="beast 1" guides='&lt;guidelines&gt;&lt;guideline direction="h"&gt;2&lt;/guideline&gt;&lt;/guidelines&gt;'>
+    <DOMTimeline name="beast 1" currentFrame="4" guides='&lt;guidelines&gt;&lt;guideline direction="h"&gt;2&lt;/guideline&gt;&lt;/guidelines&gt;'>
       <layers>
         <DOMLayer name="Layer 2" color="#9933CC" current="true" isSelected="true">
           <frames>
             <DOMFrame index="0" duration="4" keyMode="9728">
               <elements>
-                <DOMSymbolInstance libraryItemName="Tween 6" selected="true" symbolType="graphic" loop="loop">
+                <DOMSymbolInstance libraryItemName="Tween 6" symbolType="graphic" loop="loop">
                   <matrix>
                     <Matrix a="1.01626586914062" d="1.01617431640625" ty="-13.25"/>
                   </matrix>

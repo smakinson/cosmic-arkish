@@ -1,4 +1,4 @@
-<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Beasts" itemID="58405974-00000319" linkageExportForAS="true" linkageClassName="Beasts" lastModified="1480974866">
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="exported/Beasts" itemID="58405974-00000319" linkageExportForAS="true" linkageClassName="Beasts" lastModified="1481045881" lastUniqueIdentifier="1">
   <persistentData>
     <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
   </persistentData>
@@ -19,21 +19,29 @@
               </Framescript>
               <elements/>
             </DOMFrame>
-          </frames>
-        </DOMLayer>
-        <DOMLayer name="beam beast" color="#FF800A" locked="true" autoNamed="false" visible="false">
-          <frames>
-            <DOMFrame index="0" duration="2" keyMode="9728">
-              <elements>
-                <DOMSymbolInstance libraryItemName="beam beast asset" name="beamBeast">
-                  <matrix>
-                    <Matrix tx="-0.5" ty="-30"/>
-                  </matrix>
-                  <transformationPoint>
-                    <Point x="10.5" y="15"/>
-                  </transformationPoint>
-                </DOMSymbolInstance>
-              </elements>
+            <DOMFrame index="2" keyMode="9728">
+              <Framescript language="JavaScript">
+                <script><![CDATA[this._width = 22;]]></script>
+              </Framescript>
+              <elements/>
+            </DOMFrame>
+            <DOMFrame index="3" keyMode="9728">
+              <Framescript language="JavaScript">
+                <script><![CDATA[this._width = 28;]]></script>
+              </Framescript>
+              <elements/>
+            </DOMFrame>
+            <DOMFrame index="4" keyMode="9728">
+              <Framescript language="JavaScript">
+                <script><![CDATA[this._width = 20;]]></script>
+              </Framescript>
+              <elements/>
+            </DOMFrame>
+            <DOMFrame index="5" keyMode="9728">
+              <Framescript language="JavaScript">
+                <script><![CDATA[this._width = 50;]]></script>
+              </Framescript>
+              <elements/>
             </DOMFrame>
           </frames>
         </DOMLayer>
@@ -50,9 +58,48 @@
             </DOMFrame>
             <DOMFrame index="1" keyMode="9728">
               <elements>
-                <DOMSymbolInstance libraryItemName="beast assets/beast 1" name="beast">
+                <DOMSymbolInstance libraryItemName="beast assets/beast 1" name="beast" selected="true">
                   <matrix>
                     <Matrix ty="-5.5"/>
+                  </matrix>
+                  <transformationPoint>
+                    <Point/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="2" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="beast assets/beast 3" name="beast" centerPoint3DY="-13.3">
+                  <transformationPoint>
+                    <Point/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="3" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="beast assets/beast 4" name="beast" centerPoint3DY="-13.3">
+                  <transformationPoint>
+                    <Point/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="4" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="beast assets/beast 5" name="beast" centerPoint3DY="-13.3">
+                  <transformationPoint>
+                    <Point/>
+                  </transformationPoint>
+                </DOMSymbolInstance>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="5" keyMode="9728">
+              <elements>
+                <DOMSymbolInstance libraryItemName="beast assets/beast 6" name="beast" centerPoint3DY="-7.8">
+                  <matrix>
+                    <Matrix a="0.588241577148438" d="0.587997436523438"/>
                   </matrix>
                   <transformationPoint>
                     <Point/>

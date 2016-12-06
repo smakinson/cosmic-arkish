@@ -1,0 +1,66 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="saucer top" itemID="5846f804-0000079d" lastModified="1481046165" lastUniqueIdentifier="1">
+  <persistentData>
+    <PD n="CreateJSToolkit_timelinedata" v="version&#xA;0.1&#xA;loop&#xA;true"/>
+  </persistentData>
+  <timeline>
+    <DOMTimeline name="saucer top" currentFrame="9">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" duration="9" keyMode="15872">
+              <elements>
+                <DOMShape isDrawingObject="true">
+                  <matrix>
+                    <Matrix a="0.122283935546875" d="0.12396240234375"/>
+                  </matrix>
+                  <fills>
+                    <FillStyle index="1">
+                      <LinearGradient>
+                        <matrix>
+                          <Matrix a="0.0017547607421875" b="-0.101715087890625" c="0.0377960205078125" d="0.000640869140625" tx="162.05" ty="17.4"/>
+                        </matrix>
+                        <GradientEntry color="#FFC800" ratio="0"/>
+                        <GradientEntry color="#C57101" ratio="1"/>
+                      </LinearGradient>
+                    </FillStyle>
+                  </fills>
+                  <edges>
+                    <Edge fillStyle1="1" edges="!6536 855[6724 1095 6644 1344!6644 1344[6566 1585 6251 1801!6251 1801[5935 2018 5430 2176!5430 2176[4908 2341 4256 2419!4256 2419[2929 2579 1721 2347!1721 2347[1150 2237 742 2055!742 2055[319 1866 131 1626!131 1626[-56 1386 24 1137!24
+ 1137[102 896 417 680!417 680[733 463 1238 305!1238 305[1760 141 2412 62!2412 62[3738 -98 4946 135!4946 135[5517 244 5926 427!5926 427[6348 615 6536 855"/>
+                    <Edge cubics="!6536 855(;7046,1506 6025,2206 4256,2419q6536 855Q6724 1095q6644 1344Q6566 1585q6251 1801Q5935 2018q5430 2176Q4908 2341q4256 2419);"/>
+                    <Edge cubics="!4256 2419(;2487,2632 640,2277 131,1626q4256 2419Q2929 2579q1721 2347Q1150 2237q742 2055Q319 1866q131 1626);"/>
+                    <Edge cubics="!131 1626(;-378,975 643,275 2412,62q131 1626Q-56 1386q24 1137Q102 896q417 680Q733 463q1238 305Q1760 141q2412 62);"/>
+                    <Edge cubics="!2412 62(;4180,-151 6027,204 6536,855q2412 62Q3738 -98q4946 135Q5517 244q5926 427Q6348 615q6536 855);"/>
+                  </edges>
+                </DOMShape>
+              </elements>
+            </DOMFrame>
+            <DOMFrame index="9" duration="10" keyMode="9728">
+              <elements>
+                <DOMShape isDrawingObject="true">
+                  <matrix>
+                    <Matrix a="0.122283935546875" d="0.12396240234375"/>
+                  </matrix>
+                  <fills>
+                    <FillStyle index="1">
+                      <SolidColor color="#FFFF00"/>
+                    </FillStyle>
+                  </fills>
+                  <edges>
+                    <Edge fillStyle1="1" edges="
+!6536 855[6724 1095 6644 1344!6644 1344[6566 1585 6251 1801!6251 1801[5935 2018 5430 2176!5430 2176[4908 2341 4256 2419!4256 2419[2929 2579 1721 2347!1721 2347[1150 2237 742 2055!742 2055[319 1866 131 1626!131 1626[-56 1386 24 1137!24
+ 1137[102 896 417 680!417 680[733 463 1238 305!1238 305[1760 141 2412 62!2412 62[3738 -98 4946 135!4946 135[5517 244 5926 427!5926 427[6348 615 6536 855"/>
+                    <Edge cubics="!6536 855(;7046,1506 6025,2206 4256,2419q6536 855Q6724 1095q6644 1344Q6566 1585q6251 1801Q5935 2018q5430 2176Q4908 2341q4256 2419);"/>
+                    <Edge cubics="!4256 2419(;2487,2632 640,2277 131,1626q4256 2419Q2929 2579q1721 2347Q1150 2237q742 2055Q319 1866q131 1626);"/>
+                    <Edge cubics="!131 1626(;-378,975 643,275 2412,62q131 1626Q-56 1386q24 1137Q102 896q417 680Q733 463q1238 305Q1760 141q2412 62);"/>
+                    <Edge cubics="!2412 62(;4180,-151 6027,204 6536,855q2412 62Q3738 -98q4946 135Q5517 244q5926 427Q6348 615q6536 855);"/>
+                  </edges>
+                </DOMShape>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

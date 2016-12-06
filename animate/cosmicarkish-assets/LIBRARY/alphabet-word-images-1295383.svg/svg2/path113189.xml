@@ -1,0 +1,32 @@
+<DOMSymbolItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ns.adobe.com/xfl/2008/" name="alphabet-word-images-1295383.svg/svg2/path113189" itemID="5846eda6-000003c0" lastModified="1481043366">
+  <timeline>
+    <DOMTimeline name="path113189">
+      <layers>
+        <DOMLayer name="Layer 1" color="#4F80FF" current="true" isSelected="true">
+          <frames>
+            <DOMFrame index="0" keyMode="9728">
+              <elements>
+                <DOMShape selected="true" isDrawingObject="true">
+                  <fills>
+                    <FillStyle index="1">
+                      <SolidColor color="#FF7F2A"/>
+                    </FillStyle>
+                  </fills>
+                  <edges>
+                    <Edge fillStyle1="1" edges="!276 0|1271 652!1271 652[1589 885 1654 1074!1654 1074[1737 1313 1460 1547!1460 1547|1351 1539!1351 1539[1491 1266 1374 1112!1374 1112[1335 1062 1253 1005!1253 1005[1150 935 1132 918!1132 918|0 425!0 425|276 0"/>
+                    <Edge cubics="!276 0(;276,0 1271,652 1271,652p276 0 1271 652);"/>
+                    <Edge cubics="!1271 652(;1641,923 1860,1208 1460,1547q1271 652Q1589 885q1654 1074Q1737 1313q1460 1547);"/>
+                    <Edge cubics="!1460 1547(1460,1547;1460,1547 1351,1539 1351,1539q1460 1547 1351 1539);"/>
+                    <Edge cubics="!1351 1539(;1572,1109 1263,1038 1132,918q1351 1539Q1491 1266q1374 1112Q1335 1062q1253 1005Q1150 935q1132 918);"/>
+                    <Edge cubics="!1132 918(;1132,918 0,425 0,425q1132 918 0 425);"/>
+                    <Edge cubics="!0 425(0,425;0,425 276,0 276,0p0 425 276 0)276,0;"/>
+                  </edges>
+                </DOMShape>
+              </elements>
+            </DOMFrame>
+          </frames>
+        </DOMLayer>
+      </layers>
+    </DOMTimeline>
+  </timeline>
+</DOMSymbolItem>

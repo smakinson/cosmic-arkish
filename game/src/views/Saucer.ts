@@ -8,6 +8,7 @@ import {State} from "../State";
 import {Beast} from "./Beast";
 import Point = createjs.Point;
 import {BeastEvent} from "../events/BeastEvent";
+import MovieClip = createjs.MovieClip;
 
 export const SAUCER_DOCKED_EVENT: string = 'Saucer.SAUCER_DOCKED_EVENT';
 
@@ -48,6 +49,7 @@ export class Saucer extends lib.Saucer {
     // on the stage:
     private saucer: MovieClip;
     private beam: MovieClip;
+    private topper: MovieClip;
     private beamBeast: MovieClip;
 
     constructor(public ship: Ship, public flyZone: Rectangle, public beasts: Array<Beast>) {
@@ -59,6 +61,10 @@ export class Saucer extends lib.Saucer {
 
         this.beam.visible = false;
         this.beamBeast.visible = false;
+
+        // topper.stop() wasnt stopping the timeline, so went this route.
+        // TODO: Investigate why stop() doesnt work.
+        this.topper.mode = MovieClip.SINGLE_FRAME;
     }
 
     destroy(): void {
@@ -172,7 +178,7 @@ export class Saucer extends lib.Saucer {
 
                 // Check to see if the beam caught a beast.
                 for (let beast of this.beasts) {
-                    if (beast.visible && beast.captured == false) {
+                    if (beast.visible && beast.onGround && beast.captured == false) {
                         if (beast.x >= globalBeamPosition.x - 15 && beast.x <= globalBeamPosition.x + 15) {
                             this.beamUpBeast(beast);
                             break;
@@ -284,6 +290,11 @@ export class Saucer extends lib.Saucer {
 
     getWidth(): number {
         return WIDTH * this.scaleX;
+    }
+
+
+    warn(): void {
+        this.topper.mode = MovieClip.INDEPENDENT;
     }
 
 }
