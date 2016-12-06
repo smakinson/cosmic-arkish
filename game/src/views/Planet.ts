@@ -134,12 +134,14 @@ export class Planet extends lib.Planet {
     }
 
     getEntryAnimation(): TweenMax {
+        // TODO: Move to the timeline?
         return TweenMax.to(this.ground, .3, {
             y: '-=' + GROUND_HEIGHT
         });
     }
 
     getExitAnimation(): TweenMax {
+        // TODO: Move to the timeline?
         return TweenMax.to(this.ground, .3, {
             y: CANVAS_HEIGHT
         });

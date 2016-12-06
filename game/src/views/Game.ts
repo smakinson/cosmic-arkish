@@ -48,11 +48,15 @@ export class Game extends lib.Game {
 
     private numMeteorsToGenerate: number;
 
+    private tickerListener: Function;
+
     private playerInput: PlayerInput = PlayerInput.getInstance();
     private state: State = State.getInstance();
 
     constructor() {
         super();
+
+        createjs.Ticker.framerate = 60;
 
         this.gameTimeline = new TimelineMax({});
 
@@ -113,7 +117,7 @@ export class Game extends lib.Game {
 
         this.nextLevel();
 
-        TweenMax.ticker.addEventListener("tick", this.handleGameTickInSpace, this);
+        this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
     }
 
     pause(): void {
@@ -130,7 +134,7 @@ export class Game extends lib.Game {
         this.planet.resume();
     }
 
-    private handleGameTickInSpace(): void {
+    private handleGameTick(): void {
 
         if (this.state.paused)return;
 
@@ -363,7 +367,7 @@ export class Game extends lib.Game {
 
         console.log('GAME OVER!');
 
-        TweenMax.ticker.removeEventListener("tick", this.handleGameTickInSpace);
+        createjs.Ticker.off('tick', this.tickerListener);
 
         // TODO: Play ending scene
     }
@@ -392,7 +396,6 @@ export class Game extends lib.Game {
                 this.state.inSpace = true;
 
                 this.generateMeteors();
-                //this.gameTimeline.call(this.leaveSpaceScene, null, this, '+=.5');
             }
         });
 

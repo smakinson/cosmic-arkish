@@ -2,6 +2,7 @@ import Rectangle = createjs.Rectangle;
 import {CANVAS_HEIGHT} from "./Game";
 import {Saucer} from "./Saucer";
 import Point = createjs.Point;
+import {State} from "../State";
 
 export const SAUCER_HIT_EVENT: string = 'PlanetGuns.SAUCER_HIT_EVENT';
 
@@ -15,6 +16,10 @@ export class PlanetGuns extends lib.PlanetGuns {
     private tween: TweenMax = new TweenMax(this, 0, {});
     private shootQueueTween: TweenMax = new TweenMax(this, 0, {});
 
+    private tickerListener: Function;
+
+    private state: State = State.getInstance();
+
     // on the stage:
     private laser: MovieClip;
     private leftGun: MovieClip;
@@ -27,12 +32,12 @@ export class PlanetGuns extends lib.PlanetGuns {
 
         this.laser.visible = false;
 
-        TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
+        this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
     }
 
     destroy(): void {
 
-        TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+        createjs.Ticker.off('tick', this.tickerListener);
 
         this._destroyed = true;
 
@@ -48,6 +53,8 @@ export class PlanetGuns extends lib.PlanetGuns {
 
     private handleGameTick(): void {
 
+        if (this.state.paused)return;
+
         // See if the saucer was hit
         let laserPosition: Point = this.localToGlobal(this.laser.x, this.laser.y);
         if (this.laser.visible) {
@@ -60,15 +67,12 @@ export class PlanetGuns extends lib.PlanetGuns {
 
     pause(): void {
 
-        TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
-
         this.tween.pause();
         this.shootQueueTween.pause();
         // TODO
     }
 
     resume(): void {
-        TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
 
         this.tween.resume();
         this.shootQueueTween.resume();

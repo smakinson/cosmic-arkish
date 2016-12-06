@@ -14,7 +14,8 @@ export const SAUCER_DOCKED_EVENT: string = 'Saucer.SAUCER_DOCKED_EVENT';
 const PHONE_TOLERANCE: number = 5;
 const WIDTH: number = 65;
 const HEIGHT: number = 17;
-const BEAM_SPEED: number = 2;
+const BEAM_SPEED: number = 4;
+const SAUCER_SPEED: number = 4.5;
 
 export class Saucer extends lib.Saucer {
 
@@ -37,8 +38,9 @@ export class Saucer extends lib.Saucer {
     private blowingUpTween: TweenMax = new TweenMax(this, 0, {});
 
     private beamingABeast: boolean = false;
-    //private beamingUpTween: TweenMax = new TweenMax(this, 0, {});
     private beastBeingBeamedUp: Beast;
+
+    private tickerListener: Function;
 
     private state: State = State.getInstance();
     private playerInput: PlayerInput = PlayerInput.getInstance();
@@ -53,7 +55,7 @@ export class Saucer extends lib.Saucer {
 
         this.dock();
 
-        TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
+        this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
 
         this.beam.visible = false;
         this.beamBeast.visible = false;
@@ -61,7 +63,7 @@ export class Saucer extends lib.Saucer {
 
     destroy(): void {
         console.log('destroyed saucer');
-        TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+        createjs.Ticker.off('tick', this.tickerListener);
 
         this._destroyed = true;
 
@@ -147,7 +149,7 @@ export class Saucer extends lib.Saucer {
 
         if (this.state.paused || this.blowingUp)return;
 
-        let distance: number;
+        //let distance: number;
         let x: number = this.x, y: number = this.y;
         let angle: number = this.playerInput.angle;
 
@@ -187,7 +189,7 @@ export class Saucer extends lib.Saucer {
 
         if (angle != ANGLE_NONE && this.beam.visible == false) {
 
-            distance = 1.8;
+            //distance = 1.8;
 
             if (this.y < this.ship.y + this.ship.bottomDistance) {
                 this._inShip = true;
@@ -218,13 +220,13 @@ export class Saucer extends lib.Saucer {
                 // Leave leeway for phone based input to not be exactly at down angle.
                 if (angle < ANGLE_DOWN_LEFT && angle > ANGLE_DOWN_RIGHT) {
 
-                    y = this.y + (-distance * Math.cos(ANGLE_DOWN));
+                    y = this.y + (-SAUCER_SPEED * Math.cos(ANGLE_DOWN));
                     this.y = y;
 
                 } else if (this.y > this.ship.y && (angle >= ANGLE_UP_LEFT || angle <= ANGLE_UP_RIGHT)) { // Still moving into docked position?
 
                     //if (this.x > this.ship.x - PHONE_TOLERANCE && this.x < this.ship.x + PHONE_TOLERANCE) {
-                    y = this.y + (-distance * Math.cos(ANGLE_UP));
+                    y = this.y + (-SAUCER_SPEED * Math.cos(ANGLE_UP));
                     this.y = y;
                     //}
                 }
@@ -233,11 +235,11 @@ export class Saucer extends lib.Saucer {
                 // Lined up to go back into ship?
                 // Leave leeway for phone based input to not be exactly at up angle.
                 if ((angle >= ANGLE_UP_LEFT || angle <= ANGLE_UP_RIGHT) && (this.x > this.ship.x - PHONE_TOLERANCE && this.x < this.ship.x + PHONE_TOLERANCE)) {
-                    this.y += (-distance * Math.cos(ANGLE_UP));
+                    this.y += (-SAUCER_SPEED * Math.cos(ANGLE_UP));
                 } else {
 
-                    x = this.x + (distance * Math.sin(angle));
-                    y = this.y + (-distance * Math.cos(angle));
+                    x = this.x + (SAUCER_SPEED * Math.sin(angle));
+                    y = this.y + (-SAUCER_SPEED * Math.cos(angle));
 
                     if (this.flyZone.contains(x, y)) {
                         // Normal movement.
@@ -260,8 +262,8 @@ export class Saucer extends lib.Saucer {
                         }
 
                         if (move) {
-                            x = this.x + (distance * Math.sin(useAngle));
-                            y = this.y + (-distance * Math.cos(useAngle));
+                            x = this.x + (SAUCER_SPEED * Math.sin(useAngle));
+                            y = this.y + (-SAUCER_SPEED * Math.cos(useAngle));
 
                             if (this.flyZone.contains(x, y)) {
                                 this.set({ x: x, y: y });

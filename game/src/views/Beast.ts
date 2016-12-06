@@ -4,8 +4,8 @@ import {Saucer} from "./Saucer";
 
 const EDGE_PAD: number = 50;
 const BEAST_PAD: number = 30;
-const SPEED: number = 3;
-const FALL_SPEED: number = 4;
+const SPEED: number = 5;
+const FALL_SPEED: number = 8;
 
 export class Beast extends lib.Beasts {
 
@@ -38,6 +38,8 @@ export class Beast extends lib.Beasts {
         return this._captured;
     }
 
+    private tickerListener: Function;
+
     private state: State = State.getInstance();
 
     // on the stage:
@@ -58,7 +60,10 @@ export class Beast extends lib.Beasts {
     }
 
     destroy(): void {
-        TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+        if (this.tickerListener) {
+            createjs.Ticker.off('tick', this.tickerListener);
+            this.tickerListener = null;
+        }
 
         this._destroyed = true;
 
@@ -69,10 +74,6 @@ export class Beast extends lib.Beasts {
     }
 
     private handleGameTick(): void {
-
-        if(this.side == Sides.Left){
-            let temp: number = 1;
-        }
 
         if (this.state.paused || this.caughtInBeam || this._captured)return;
 
@@ -164,7 +165,10 @@ export class Beast extends lib.Beasts {
         console.log('captured side:', this.side);
 
         // TODO:  There seems to be a scope problem with this as it removes the wrong instance listener.
-        //TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+        if (this.tickerListener) {
+            createjs.Ticker.off('tick', this.tickerListener);
+            this.tickerListener = null;
+        }
     }
 
     reactToBeamTouch(): void {
@@ -198,7 +202,7 @@ export class Beast extends lib.Beasts {
 
     run(otherBeast: Beast): void {
         this.otherBeast = otherBeast;
-        TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
+        this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
     }
 
 }

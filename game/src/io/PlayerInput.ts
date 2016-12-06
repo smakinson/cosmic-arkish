@@ -55,6 +55,8 @@ export class PlayerInput extends createjs.EventDispatcher {
 
     private lastPressedKeyCode: number;
 
+    private tickerListener: Function;
+
     static getInstance(): PlayerInput {
 
         if (PlayerInput.instance === null) {
@@ -137,12 +139,12 @@ export class PlayerInput extends createjs.EventDispatcher {
             this.lastPressedKeyCode = event.keyCode;
         });
 
-        TweenMax.ticker.addEventListener("tick", this.handleGameTick, this);
+        this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
     }
 
     destroy(): void {
 
-        TweenMax.ticker.removeEventListener("tick", this.handleGameTick);
+        createjs.Ticker.off('tick', this.tickerListener);
 
         $('html').unbind('keydown');
         $('html').unbind('keyup');
