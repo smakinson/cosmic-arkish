@@ -175,13 +175,21 @@ export class Beast extends lib.Beasts {
     markAsCaptured(): void {
         this._captured = true;
 
-        console.log('captured side:', this.side);
-
-        // TODO:  There seems to be a scope problem with this as it removes the wrong instance listener.
         if (this.tickerListener) {
             createjs.Ticker.off('tick', this.tickerListener);
             this.tickerListener = null;
         }
+    }
+
+    releaseFromCapture(): void {
+        if(this._captured == false)return;
+
+        this._captured = false;
+        this.caughtInBeam = false;
+        this.y = 0;
+        this.visible = true;
+
+        this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
     }
 
     reactToBeamTouch(): void {
@@ -199,7 +207,7 @@ export class Beast extends lib.Beasts {
         // Drop the beast back to the ground.
         this.droppedFromBeam = true;
 
-        this.beast.visible = false;
+        //this.beast.visible = false;
         this.visible = true;
     }
 

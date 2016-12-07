@@ -57,7 +57,7 @@ export class PlanetGuns extends lib.PlanetGuns {
 
         // See if the saucer was hit
         let laserPosition: Point = this.localToGlobal(this.laser.x, this.laser.y);
-        if (this.laser.visible) {
+        if (this.laser.visible && this.saucer.blowingUp == false) {
             if (laserPosition.y >= this.saucer.y - 5 && laserPosition.y <= this.saucer.y + this.saucer.getHeight()) {
                 console.log('---> BLASTED the saucer! <---');
                 this.dispatchEvent(SAUCER_HIT_EVENT);
@@ -82,11 +82,11 @@ export class PlanetGuns extends lib.PlanetGuns {
     run(): void {
 
         // Bring the guns to the repeat height.
-        // TODO: Make sure this y position can hit the saucer at its lowest y position.
         TweenMax.to(this, .5, { y: this.shootZone.y + this.shootZone.height, delay: .5 });
 
         // Begin the repeating up/down movement.
-        // TODO: Vary speed by level.
+        // TODO: Vary speed by level?
+        // TODO: Match the gun speed with the saucer speed?
         this.tween = TweenMax.to(this, 4, {
             y: this.shootZone.y,
             yoyo: true,
@@ -101,7 +101,7 @@ export class PlanetGuns extends lib.PlanetGuns {
     private queueShot(): void {
         // Begin shooting timer.
         // TODO: Speed this up by level.
-        let shotDelay: number = 5;
+        let shotDelay: number = 2;
         this.shootQueueTween = TweenMax.delayedCall(shotDelay, this.shoot, [], this);
     }
 

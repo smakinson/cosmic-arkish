@@ -188,12 +188,18 @@ export class Planet extends lib.Planet {
     }
 
     private handleSaucerHit(): void {
-        this.warnTween.kill();
+
         this._saucer.blowUp();
         this.state.saucerHit();
 
-        // TODO: Handle losing any collected beasts.
-        // TODO:  Research if they are both lost if this was a return to the planet after one was collected.
+        // Release a beast if any are captured.
+        if (this.beastLeftCaptured) {
+            this.beastLeft.releaseFromCapture();
+            this.beastLeftCaptured = false;
+        } else if (this.beastRightCaptured) {
+            this.beastRight.releaseFromCapture();
+            this.beastRightCaptured = false;
+        }
     }
 
     private handleShipDestroyed(): void {
@@ -235,7 +241,7 @@ export class Planet extends lib.Planet {
         let xOffset: number = 42;
         let shipBottomY: number = this.ship.y + this.ship.bottomDistance;
 
-        this.saucerArea = new Rectangle(xOffset, shipBottomY, CANVAS_WIDTH - xOffset * 2, CANVAS_HEIGHT - shipBottomY - GROUND_HEIGHT - 50);
+        this.saucerArea = new Rectangle(xOffset, shipBottomY, CANVAS_WIDTH - xOffset * 2, CANVAS_HEIGHT - shipBottomY - GROUND_HEIGHT - 70);
 
         this.createBeasts();    // Create the beasts first so they can be handed to the saucer.
         this.createSaucer();

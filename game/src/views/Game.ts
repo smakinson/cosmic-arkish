@@ -4,7 +4,6 @@ import Container = createjs.Container;
 import {PlayerInput} from "../io/PlayerInput";
 import {Shot} from "./Shot";
 import {State} from "../State";
-import Rectangle = createjs.Rectangle;
 import {Planet, WARN_COMPLETE_EVENT, ALL_BEASTS_CAPTURED_EVENT} from "./Planet";
 
 export enum Sides { Right, Left, Bottom, Top, None }
@@ -82,11 +81,8 @@ export class Game extends lib.Game {
             this.tickerListener = null;
         }
 
-        this.planet.off(WARN_COMPLETE_EVENT, this.planetWarnCompleteListener);
-        this.planet.off(ALL_BEASTS_CAPTURED_EVENT, this.allBeastsCapturedListener);
-
-        this.planet.destroy();
-        this.ship.destroy();
+        this.destroyPlanet();
+        this.destroyShip();
 
         // TODO: Anything else to destroy?
 
@@ -98,11 +94,18 @@ export class Game extends lib.Game {
     }
 
     private createGameTimeline(): void {
-        if(this.gameTimeline) {
+        if (this.gameTimeline) {
             this.gameTimeline.kill();
             this.gameTimeline.clear();
         }
         this.gameTimeline = new TimelineMax({});
+    }
+
+    private destroyPlanet(): void {
+        this.planet.off(WARN_COMPLETE_EVENT, this.planetWarnCompleteListener);
+        this.planet.off(ALL_BEASTS_CAPTURED_EVENT, this.allBeastsCapturedListener);
+
+        this.planet.destroy();
     }
 
     private nextLevel(): void {
@@ -128,6 +131,10 @@ export class Game extends lib.Game {
         this.ship.x = CANVAS_CENTER_X;
         this.ship.y = -this.ship.getHeight() - 5;
         this.addChild(this.ship);
+    }
+
+    private destroyShip(): void {
+        this.ship.destroy();
     }
 
     run(): void {
@@ -381,6 +388,9 @@ export class Game extends lib.Game {
         console.log('GAME OVER!');
 
         this.clearSky();
+
+        this.destroyPlanet();
+        this.destroyShip();
 
         if (this.tickerListener) {
             createjs.Ticker.off('tick', this.tickerListener);

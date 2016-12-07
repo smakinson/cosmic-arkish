@@ -16,7 +16,7 @@ const PHONE_TOLERANCE: number = 5;
 const WIDTH: number = 65;
 const HEIGHT: number = 17;
 const BEAM_SPEED: number = 4;
-const SAUCER_SPEED: number = 4.5;
+const SAUCER_SPEED: number = 5;
 
 export class Saucer extends lib.Saucer {
 
@@ -35,7 +35,11 @@ export class Saucer extends lib.Saucer {
         return this._docked;
     }
 
-    private blowingUp: boolean = false;
+    private _blowingUp: boolean = false;
+    get blowingUp(): boolean {
+        return this._blowingUp;
+    }
+
     private blowingUpTween: TweenMax = new TweenMax(this, 0, {});
 
     private beamingABeast: boolean = false;
@@ -85,7 +89,7 @@ export class Saucer extends lib.Saucer {
 
     private dock(): void {
 
-        if (this._docked == false && this.blowingUp == false) {
+        if (this._docked == false && this._blowingUp == false) {
             this.dispatchEvent(SAUCER_DOCKED_EVENT);
         }
 
@@ -97,9 +101,12 @@ export class Saucer extends lib.Saucer {
 
     blowUp(): TweenMax {
 
-        if (this.blowingUp == false) {
+        if (this._blowingUp == false) {
 
-            this.blowingUp = true;
+            this._blowingUp = true;
+            this.beam.visible = false;
+
+            this.dropBeastInBeam();
 
             // TODO: Make this a better animation.
             this.blowingUpTween = TweenMax.to(this, .3, {
@@ -110,7 +117,7 @@ export class Saucer extends lib.Saucer {
                 onComplete: () => {
                     this.alpha = 1;
                     this.dock();
-                    this.blowingUp = false;
+                    this._blowingUp = false;
                 }
             });
         }
@@ -133,7 +140,6 @@ export class Saucer extends lib.Saucer {
     }
 
     private captureBeastInBeam(): void {
-        // TODO
 
         this.beamBeast.visible = false;
         this.beamingABeast = false;
@@ -146,20 +152,20 @@ export class Saucer extends lib.Saucer {
     }
 
     private dropBeastInBeam(): void {
-        // TODO
 
-        this.beamBeast.visible = false;
-        this.beamingABeast = false;
+        if (this.beastBeingBeamedUp) {
+            this.beamBeast.visible = false;
+            this.beamingABeast = false;
 
-        this.beastBeingBeamedUp.reactToBeamRelease();
-        this.beastBeingBeamedUp = null;
+            this.beastBeingBeamedUp.reactToBeamRelease();
+            this.beastBeingBeamedUp = null;
+        }
     }
 
     private handleGameTick(): void {
 
-        if (this.state.paused || this.blowingUp)return;
+        if (this.state.paused || this._blowingUp)return;
 
-        //let distance: number;
         let x: number = this.x, y: number = this.y;
         let angle: number = this.playerInput.angle;
 
@@ -198,8 +204,6 @@ export class Saucer extends lib.Saucer {
         }
 
         if (angle != ANGLE_NONE && this.beam.visible == false) {
-
-            //distance = 1.8;
 
             if (this.y < this.ship.y + this.ship.bottomDistance) {
                 this._inShip = true;
