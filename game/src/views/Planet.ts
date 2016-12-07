@@ -126,7 +126,7 @@ export class Planet extends lib.Planet {
     }
 
     private createGuns(): void {
-        // TODO: add guns on proper levels
+        // No guns on the first level.
         if (this.state.level > 1) {
             this.guns = new PlanetGuns(this._saucer, this.saucerArea);
             this.addChildAt(this.guns, 1);
@@ -136,17 +136,29 @@ export class Planet extends lib.Planet {
     }
 
     private createBeasts(): void {
-        this.beastLeft = new Beast(Sides.Left, this._saucer);
-        this.beastLeft.x = 200;
 
-        this.beastRight = new Beast(Sides.Right, this._saucer);
-        this.beastRight.x = CANVAS_WIDTH - this.beastLeft.x;
+        let leftOtherBeast: Beast;
+        let rightOtherBeast: Beast;
 
-        this.ground.addChild(this.beastLeft);
-        this.ground.addChild(this.beastRight);
+        // See if this is a return visit after having captured only one beast.
+        if (this.beastLeftCaptured == false) {
+            this.beastLeft = new Beast(Sides.Left, this._saucer);
+            this.beastLeft.x = 200;
+            this.ground.addChild(this.beastLeft);
 
-        this.beastLeft.run(this.beastRight);
-        this.beastRight.run(this.beastLeft);
+            rightOtherBeast = this.beastLeft;
+        }
+
+        if (this.beastRightCaptured == false) {
+            this.beastRight = new Beast(Sides.Right, this._saucer);
+            this.beastRight.x = CANVAS_WIDTH - this.beastLeft.x;
+            this.ground.addChild(this.beastRight);
+
+            leftOtherBeast = this.beastRight;
+        }
+
+        this.beastLeft.run(leftOtherBeast);
+        this.beastRight.run(rightOtherBeast);
     }
 
     getEntryAnimation(): TweenMax {
@@ -164,15 +176,19 @@ export class Planet extends lib.Planet {
     }
 
     private handleSaucerDocked(): void {
-        if (this.beastLeftCaptured && this.beastRightCaptured) {
+        if (this._warningGiven == false) {
+            if (this.beastLeftCaptured && this.beastRightCaptured) {
+                this.warnTween.kill();
 
-            this.state.planetCleared(this._warningGiven);
+                this.state.planetCleared(this._warningGiven);
 
-            this.dispatchEvent(ALL_BEASTS_CAPTURED_EVENT);
+                this.dispatchEvent(ALL_BEASTS_CAPTURED_EVENT);
+            }
         }
     }
 
     private handleSaucerHit(): void {
+        this.warnTween.kill();
         this._saucer.blowUp();
         this.state.saucerHit();
 
@@ -181,6 +197,7 @@ export class Planet extends lib.Planet {
     }
 
     private handleShipDestroyed(): void {
+        this.warnTween.kill();
         this.destroySaucer();
     }
 
@@ -201,14 +218,12 @@ export class Planet extends lib.Planet {
         if (this.guns) this.guns.pause();
         this.beastLeft.pause();
         this.beastRight.pause();
-        // TODO
     }
 
     resume(): void {
         if (this.guns) this.guns.resume();
         this.beastLeft.resume();
         this.beastRight.resume();
-        // TODO
     }
 
     run(ship: Ship): void {
@@ -227,12 +242,12 @@ export class Planet extends lib.Planet {
         this.shipDestroyedListener = this.ship.on(SHIP_DESTROYED_EVENT, this.handleShipDestroyed, this);
 
         this.startWarningTimer();
-
-        // TODO: More...
     }
 
+    // For between visits, call nextLevel also as level increases.
     reset(): void {
 
+        this.warnTween.kill();
         this.destroySaucer();
         this.destroyGuns();
         this.destroyBeasts();
@@ -242,18 +257,17 @@ export class Planet extends lib.Planet {
         }
 
         this._warningGiven = false;
-        // TODO: More to reset?
     }
 
     private startWarningTimer(): void {
-
-        // TODO: Determine this delay by the level.
-        let warningDelay: number = 300;
-
-        this.warnTween = TweenMax.delayedCall(warningDelay, this.handleWarningTime, [], this);
+        this.warnTween.kill();
+        this.warnTween = TweenMax.delayedCall(this.state.planetWarningDelay, this.handleWarningTime, [], this);
     }
 
     private handleWarningTime(): void {
+
+        this._warningGiven = true;
+
         this.warnTween.kill();
         this.ship.warn();
         this._saucer.warn();

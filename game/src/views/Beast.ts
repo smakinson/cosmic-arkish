@@ -122,14 +122,22 @@ export class Beast extends lib.Beasts {
 
             // Keep a minimum gap between the beasts.
             if (this.side == Sides.Left) {
-                clampedX = _.clamp(posX, EDGE_PAD, this.otherBeast.x - BEAST_PAD);
+                if (this.otherBeast) {
+                    clampedX = _.clamp(posX, EDGE_PAD, this.otherBeast.x - BEAST_PAD);
+                } else {
+                    clampedX = _.clamp(posX, EDGE_PAD, this.xMax);
+                }
 
                 if (clampedX != posX) {
                     this.waitOnDirChangeCount = 5;
                     this.direction = -SPEED;
                 }
             } else {
-                clampedX = _.clamp(posX, this.otherBeast.x + BEAST_PAD, this.xMax);
+                if (this.otherBeast) {
+                    clampedX = _.clamp(posX, this.otherBeast.x + BEAST_PAD, this.xMax);
+                } else {
+                    clampedX = _.clamp(posX, EDGE_PAD, this.xMax);
+                }
 
                 if (clampedX != posX) {
                     this.waitOnDirChangeCount = 5;
@@ -149,7 +157,7 @@ export class Beast extends lib.Beasts {
 
     private pickDirection(): void {
 
-        // Do a wiggle?
+        // Do a waver?
         if (_.random(1, 10) > 3) {
             this.wiggle = true;
             this.wiggleCount = 0;
@@ -203,7 +211,7 @@ export class Beast extends lib.Beasts {
         // TODO
     }
 
-    run(otherBeast: Beast): void {
+    run(otherBeast: Beast = null): void {
         this.otherBeast = otherBeast;
         this.tickerListener = createjs.Ticker.on('tick', this.handleGameTick, this);
     }

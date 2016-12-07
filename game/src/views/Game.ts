@@ -20,6 +20,9 @@ const SHIP_REST_Y: number = CANVAS_CENTER_Y - 60;
 const LABEL_METEOR: string = "meteor";
 const LABEL_SHOT_ALL_METEORS: string = "shotAllMeteors";
 
+const MIN_NUM_METEORS: number = 8;
+const MAX_NUM_METEORS: number = 30;
+const MAX_WAVERING_METEORS: number = 8;
 
 export class Game extends lib.Game {
 
@@ -44,7 +47,9 @@ export class Game extends lib.Game {
     private ship: Ship;
     private shipIsNew: boolean = true;
 
-    private numMeteorsToGenerate: number;
+    private numMeteorsToGenerate: number = MIN_NUM_METEORS;
+    private numWaveringMeteorsToGenerate: number = 0;
+    private numWaveringMeteorsRemaining: number = 0;
 
     private planetWarnCompleteListener: Function;
     private allBeastsCapturedListener: Function;
@@ -83,7 +88,7 @@ export class Game extends lib.Game {
         this.planet.destroy();
         this.ship.destroy();
 
-        // TODO
+        // TODO: Anything else to destroy?
 
     }
 
@@ -93,7 +98,10 @@ export class Game extends lib.Game {
     }
 
     private createGameTimeline(): void {
-        //this.gameTimeline.clear();
+        if(this.gameTimeline) {
+            this.gameTimeline.kill();
+            this.gameTimeline.clear();
+        }
         this.gameTimeline = new TimelineMax({});
     }
 
@@ -101,8 +109,10 @@ export class Game extends lib.Game {
         this.state.nextLevel();
         this.planet.nextLevel();
 
-        // TODO: Calculate this based on level.
-        this.numMeteorsToGenerate = 1;
+        this.numMeteorsToGenerate += this.numMeteorsToGenerate >= MAX_NUM_METEORS ? 0 : 1;
+
+        // Calculate the number of wavering meteors for the wave.
+        this.numWaveringMeteorsToGenerate += this.numWaveringMeteorsToGenerate >= MAX_WAVERING_METEORS ? 0 : 1;
     }
 
     private createPlanet(): void {
@@ -131,14 +141,12 @@ export class Game extends lib.Game {
     }
 
     pause(): void {
-        // TODO
         this.state.paused = true;
         this.gameTimeline.pause();
         this.planet.pause();
     }
 
     resume(): void {
-        // TODO
         this.state.paused = false;
         this.gameTimeline.resume();
         this.planet.resume();
@@ -252,17 +260,11 @@ export class Game extends lib.Game {
     }
 
     private handlePlanetWarnComplete(): void {
-
-        //this.createGameTimeline();
-
         // Only one meteor when on the planet.
         this.generateMeteors(1);
     }
 
     private handleAllBeastsCaptured(): void {
-        // TODO
-        //this.createGameTimeline();
-
         this.leavePlanetScene();
     }
 
@@ -313,7 +315,7 @@ export class Game extends lib.Game {
 
     private destroyMeteor(meteor: Meteor): void {
 
-        this.gameTimeline.remove(meteor.tween);
+        //this.gameTimeline.remove(meteor.tween);
 
         // Remove it from the lists.
 
@@ -365,9 +367,6 @@ export class Game extends lib.Game {
             this.removeChild(this.ship);
         }
 
-        // TODO: Take away ship power.
-        // TODO: What else?
-
         // The original lets me have 5 ships if I just let the meteors hit me till its game over.
         // So it must be letting the fuel hit 0 and play once more.
         if (this.state.fuelLevel < 0) {
@@ -388,7 +387,13 @@ export class Game extends lib.Game {
             this.tickerListener = null;
         }
 
+        this.gotoEndingScene();
+    }
+
+    private gotoEndingScene(): void {
         // TODO: Play ending scene
+
+        // TODO: Make a play again option and reset the game.
     }
 
     private gotoSpaceScene(): void {
@@ -462,8 +467,6 @@ export class Game extends lib.Game {
     private leavePlanetScene(): void {
 
         this.state.allowShots = false;
-        this.numMeteorsShot = 0;
-
 
         this.clearSky();
 
@@ -478,6 +481,9 @@ export class Game extends lib.Game {
                 if (this.planet.isClear) {
                     this.nextLevel();
                 }
+
+                this.numMeteorsShot = 0;
+                this.numWaveringMeteorsRemaining = this.numWaveringMeteorsToGenerate;
 
                 this.gotoSpaceScene();
             }
@@ -503,8 +509,6 @@ export class Game extends lib.Game {
             this.destroyShot(s);
         }
 
-        // TODO: Remove other stuff?
-
         this.meteors = [];
         this.shots = [];
         this.currentMeteor = null;
@@ -520,21 +524,29 @@ export class Game extends lib.Game {
 
         let count: number = 0;
 
-        if (numToGenerate == 0) {
+        if (numToGenerate == 0) {   // Meaning base this on the level.
             if (this.numMeteorsShot == 0) {
                 // First time generating meteors for the level.
                 numToGenerate = this.numMeteorsToGenerate;
             } else {
-                // Fewer to generate.
-                // TODO: Research this to get formula.
-                numToGenerate = this.numMeteorsToGenerate - this.numMeteorsShot + 1;
+                // Generate the missed meteors plus a penalty.
+                numToGenerate = this.numMeteorsToGenerate - this.numMeteorsShot + 2;
             }
         }
 
         //console.log('Generating', numToGenerate, 'meteors');
 
         while (count < numToGenerate) {
-            let meteor: Meteor = this.createMeteor();
+
+            // Wavering or normal?
+            let wavering: boolean = false;
+
+            if (this.numWaveringMeteorsRemaining > 0) {
+                wavering = _.sample([1, 2, 3, 4]) == 3; // About a 25% chance.
+                if (wavering) this.numWaveringMeteorsRemaining--;
+            }
+
+            let meteor: Meteor = this.createMeteor(wavering);
 
             // Add a meteor and then a label to jump to if that meteor is shot.
             this.gameTimeline.call(() => {
@@ -549,7 +561,7 @@ export class Game extends lib.Game {
         this.gameTimeline.add(LABEL_SHOT_ALL_METEORS);
     }
 
-    private createMeteor(): Meteor {
+    private createMeteor(wavering: boolean): Meteor {
 
         let side: number;
 
@@ -562,13 +574,8 @@ export class Game extends lib.Game {
 
         let meteor: Meteor;
         let position: { x: number, y: number };
-        let wiggle: boolean = false;
 
-        // TODO: Randomize wiggling meteors based on the level.
-        // TODO: Does it make it possible for shot to miss it?
-        //wiggle = true;
-
-        meteor = new Meteor(side, LABEL_METEOR + this.meteors.length, wiggle);
+        meteor = new Meteor(side, LABEL_METEOR + this.meteors.length, wavering);
 
         switch (side) {
             case Sides.Top:

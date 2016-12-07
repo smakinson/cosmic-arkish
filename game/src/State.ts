@@ -1,6 +1,10 @@
 import {Meteor} from "./views/Meteor";
 
 const MAX_FUEL: number = 40;
+const MAX_METEOR_TWEEN_DURATION: number = 7;
+const MIN_METEOR_TWEEN_DURATION: number = 2.6;
+const MAX_WARNING_DELAY: number = 20;
+const MIN_WARNING_DELAY: number = 13;
 
 // scoring, fuel, etc details from:
 // http://www.gamesdatabase.org//Media/SYSTEM/Atari_2600/Manual/formated/Cosmic_Ark_-_1982_-_Imagic.pdf
@@ -17,6 +21,9 @@ export class State extends createjs.EventDispatcher {
     level: number;
     fuelLevel: number;
     score: number;
+
+    meteorTweenDuration: number = MAX_METEOR_TWEEN_DURATION;
+    planetWarningDelay: number = MAX_WARNING_DELAY;
 
     private _beastFrameNumber: number;  // Frame numbers are 0 based.
     get beastFrameNumber(): number {
@@ -39,7 +46,7 @@ export class State extends createjs.EventDispatcher {
 
     meteorDestroyed(meteor: Meteor): void {
 
-        this.score += meteor.wiggle ? 30 : 10;
+        this.score += meteor.waver ? 30 : 10;
 
         if (this.fuelLevel < MAX_FUEL)
             this.fuelLevel++;
@@ -68,6 +75,9 @@ export class State extends createjs.EventDispatcher {
             // Frame numbers are 0 based.
             this._beastFrameNumber++;
         }
+
+        this.meteorTweenDuration -= this.meteorTweenDuration > MIN_METEOR_TWEEN_DURATION ? .2 : 0;
+        this.planetWarningDelay -= this.planetWarningDelay > MIN_WARNING_DELAY ? .4 : 0;
 
         this.level++;
     }

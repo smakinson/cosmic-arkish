@@ -1,5 +1,6 @@
 import {Sides} from "./Game";
 import DisplayObject = createjs.DisplayObject;
+import {State} from "../State";
 
 export class Meteor extends lib.Meteor {
 
@@ -13,7 +14,9 @@ export class Meteor extends lib.Meteor {
         return this._tween;
     }
 
-    constructor(public side: number, public label: string, public wiggle: boolean = false) {
+    private state: State = State.getInstance();
+
+    constructor(public side: number, public label: string, public waver: boolean = false) {
         super();
 
         this.side = side;
@@ -35,7 +38,7 @@ export class Meteor extends lib.Meteor {
                 break;
         }
 
-        if (wiggle) frameName = 'wiggle_' + frameName;
+        if (waver) frameName = 'wiggle_' + frameName;
 
         this.gotoAndStop(frameName);
     }
@@ -51,18 +54,20 @@ export class Meteor extends lib.Meteor {
 
     fireAt(target: DisplayObject): TweenMax {
 
-        let time: number = 8;
+        let time: number = this.state.meteorTweenDuration;
 
-        // TODO: Increase the speed as levels progress
-        // TODO: Speed and increases differ for X & Y directions
+        // Make up for the slight bit of extra space under the ship.
+        if(this.side == Sides.Bottom){
+            time -= .4;
+        }
+
         this._tween = TweenMax.to(this, time, {
             x: target.x,
             y: target.y,
-            //useFrames: true,
             ease: Strong.easeOut,
             onStart: () => {
-                if (this.wiggle) {
-                    // TODO: Play meteor wiggle sound.
+                if (this.waver) {
+                    // TODO: Play meteor waver sound.
                 } else {
                     // TODO: Play meteor sound.
                 }

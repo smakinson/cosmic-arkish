@@ -65,6 +65,9 @@ export class Saucer extends lib.Saucer {
         // topper.stop() wasnt stopping the timeline, so went this route.
         // TODO: Investigate why stop() doesnt work.
         this.topper.mode = MovieClip.SINGLE_FRAME;
+
+        // TODO: Change saucer color every 4th planet.
+        // TODO: Increase saucer speed every 4th planet.
     }
 
     destroy(): void {
