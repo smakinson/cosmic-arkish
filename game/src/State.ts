@@ -1,6 +1,7 @@
 import {Meteor} from "./views/Meteor";
 
 const MAX_FUEL: number = 40;
+const MIN_FUEL: number = -1;
 const MAX_METEOR_TWEEN_DURATION: number = 7;
 const MIN_METEOR_TWEEN_DURATION: number = 2.6;
 const MAX_WARNING_DELAY: number = 20;
@@ -60,8 +61,8 @@ export class State extends createjs.EventDispatcher {
 
         // The original lets me have 5 ships if I just let the meteors hit me till its game over.
         // So it must be letting the fuel go under 0 to mean game over.
-        if (fuel < -1)
-            fuel = -1;
+        if (fuel < MIN_FUEL)
+            fuel = MIN_FUEL;
 
         this.fuelLevel = fuel;
 
@@ -86,7 +87,7 @@ export class State extends createjs.EventDispatcher {
 
         // The original lets me have 5 ships if I just let the meteors hit me till its game over.
         // So it must be letting the fuel go under 0 to mean game over.
-        if (this.fuelLevel > -1)
+        if (this.fuelLevel > MIN_FUEL)
             this.fuelLevel--;
     }
 
@@ -119,7 +120,7 @@ export class State extends createjs.EventDispatcher {
         this.level = 0;
         this.fuelLevel = MAX_FUEL;
         this.score = 0;
-        this._beastFrameNumber = -1;
+        this._beastFrameNumber = -1;    // Start at -1 since it will immediately be moved to 0 when game starts.
     }
 
     restartBeastFrameNumber(): void {

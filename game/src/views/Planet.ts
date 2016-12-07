@@ -207,6 +207,8 @@ export class Planet extends lib.Planet {
         } else if (event.beast.side == Sides.Right) {
             this.beastRightCaptured = true;
         }
+
+        this.state.beastieCaptured();
     }
 
     nextLevel(): void {
