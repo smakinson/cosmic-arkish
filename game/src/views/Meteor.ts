@@ -1,6 +1,8 @@
 import {Sides} from "./Game";
 import DisplayObject = createjs.DisplayObject;
 import {State} from "../State";
+import {Sounds} from "../io/Sounds";
+import AbstractSoundInstance = createjs.AbstractSoundInstance;
 
 export class Meteor extends lib.Meteor {
 
@@ -14,9 +16,13 @@ export class Meteor extends lib.Meteor {
         return this._tween;
     }
 
-    private state: State = State.getInstance();
+    private playingMeteorSound: AbstractSoundInstance;
+    private playingMeteorTingSound: AbstractSoundInstance;
 
-    constructor(public side: number, public label: string, public waver: boolean = false) {
+    private state: State = State.getInstance();
+    private sounds: Sounds = Sounds.getInstance();
+
+    constructor(public side: number, public label: string, public meteorNum: number, public ofTotalMeteors: number, public waver: boolean = false) {
         super();
 
         this.side = side;
@@ -47,6 +53,9 @@ export class Meteor extends lib.Meteor {
         this._destroyed = true;
         this._tween.kill();
 
+        if(this.playingMeteorSound)this.playingMeteorSound.stop();
+        if(this.playingMeteorTingSound)this.playingMeteorTingSound.stop();
+
         if (this.parent) {
             this.parent.removeChild(this);
         }
@@ -66,10 +75,12 @@ export class Meteor extends lib.Meteor {
             y: target.y,
             ease: Strong.easeOut,
             onStart: () => {
-                if (this.waver) {
-                    // TODO: Play meteor waver sound.
-                } else {
-                    // TODO: Play meteor sound.
+                this.playingMeteorSound = this.sounds.playMeteorSound(this.waver, this.meteorNum, this.ofTotalMeteors);
+
+                if(this.state.inSpace) {
+                    if (this.meteorNum == this.ofTotalMeteors - 1) {
+                        this.playingMeteorTingSound = this.sounds.playFinalMeteorSound();
+                    }
                 }
             }
         });

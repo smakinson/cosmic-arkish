@@ -77,8 +77,8 @@ export class State extends createjs.EventDispatcher {
             this._beastFrameNumber++;
         }
 
-        this.meteorTweenDuration -= this.meteorTweenDuration > MIN_METEOR_TWEEN_DURATION ? .2 : 0;
-        this.planetWarningDelay -= this.planetWarningDelay > MIN_WARNING_DELAY ? .4 : 0;
+        this.meteorTweenDuration -= this.meteorTweenDuration > MIN_METEOR_TWEEN_DURATION ? .4 : 0;
+        this.planetWarningDelay -= this.planetWarningDelay > MIN_WARNING_DELAY ? .5 : 0;
 
         this.level++;
     }

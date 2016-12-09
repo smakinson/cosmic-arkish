@@ -107,7 +107,7 @@ export class PlanetGuns extends lib.PlanetGuns {
 
     private shoot(): void {
         this.laser.visible = true;
-        this.shootQueueTween = TweenMax.delayedCall(.1, this.hideShot, [], this);
+        this.shootQueueTween = TweenMax.delayedCall(.08, this.hideShot, [], this);
 
 
         // TODO: Play planet gun shot sound.

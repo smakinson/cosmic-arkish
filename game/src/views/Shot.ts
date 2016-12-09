@@ -1,4 +1,5 @@
 import {Sides, CANVAS_WIDTH, CANVAS_HEIGHT} from "./Game";
+import {Sounds} from "../io/Sounds";
 
 export class Shot extends lib.Shot {
 
@@ -8,6 +9,8 @@ export class Shot extends lib.Shot {
     }
 
     private tween: TweenMax = new TweenMax(this, 0, {});
+
+    private sounds: Sounds = Sounds.getInstance();
 
     constructor(public direction: Sides) {
         super();
@@ -30,7 +33,8 @@ export class Shot extends lib.Shot {
             x: this.x, y: this.y,
             ease: Linear.easeNone,
             onStart: () => {
-                // TODO: Play shot sound.
+                this.sounds.playShipShotSound();
+
             },
             onComplete: () => this.destroy()
         };

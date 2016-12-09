@@ -5,6 +5,7 @@ import {PlayerInput} from "../io/PlayerInput";
 import {Shot} from "./Shot";
 import {State} from "../State";
 import {Planet, WARN_COMPLETE_EVENT, ALL_BEASTS_CAPTURED_EVENT} from "./Planet";
+import {Sounds, SOUNDS_LOADED_EVENT} from "../io/Sounds";
 
 export enum Sides { Right, Left, Bottom, Top, None }
 
@@ -20,7 +21,7 @@ const LABEL_METEOR: string = "meteor";
 const LABEL_SHOT_ALL_METEORS: string = "shotAllMeteors";
 
 const MIN_NUM_METEORS: number = 8;
-const MAX_NUM_METEORS: number = 30;
+export const MAX_NUM_METEORS: number = 30;
 const MAX_WAVERING_METEORS: number = 8;
 
 export class Game extends lib.Game {
@@ -56,6 +57,7 @@ export class Game extends lib.Game {
 
     private playerInput: PlayerInput = PlayerInput.getInstance();
     private state: State = State.getInstance();
+    private sounds: Sounds = Sounds.getInstance();
 
     constructor() {
         super();
@@ -89,6 +91,7 @@ export class Game extends lib.Game {
     }
 
     private continueGame(): void {
+        this.clearSky();
         this.createShip();
         this.gotoSpaceScene();
     }
@@ -138,6 +141,10 @@ export class Game extends lib.Game {
     }
 
     run(): void {
+
+        // TODO: Wait for sounds to load.
+        this.sounds.run();
+
         this.createShip();
         this.createPlanet();
 
@@ -556,7 +563,7 @@ export class Game extends lib.Game {
                 if (wavering) this.numWaveringMeteorsRemaining--;
             }
 
-            let meteor: Meteor = this.createMeteor(wavering);
+            let meteor: Meteor = this.createMeteor(wavering, numToGenerate);
 
             // Add a meteor and then a label to jump to if that meteor is shot.
             this.gameTimeline.call(() => {
@@ -571,7 +578,7 @@ export class Game extends lib.Game {
         this.gameTimeline.add(LABEL_SHOT_ALL_METEORS);
     }
 
-    private createMeteor(wavering: boolean): Meteor {
+    private createMeteor(wavering: boolean, totalBeingGenerated: number): Meteor {
 
         let side: number;
 
@@ -585,20 +592,20 @@ export class Game extends lib.Game {
         let meteor: Meteor;
         let position: { x: number, y: number };
 
-        meteor = new Meteor(side, LABEL_METEOR + this.meteors.length, wavering);
+        meteor = new Meteor(side, LABEL_METEOR + this.meteors.length, this.meteors.length, totalBeingGenerated, wavering);
 
         switch (side) {
             case Sides.Top:
-                position = { x: this.ship.x, y: 0 };
+                position = { x: this.ship.x, y: -20 };
                 break;
             case Sides.Right:
-                position = { x: CANVAS_WIDTH, y: this.ship.y };
+                position = { x: CANVAS_WIDTH + 20, y: this.ship.y };
                 break;
             case Sides.Bottom:
-                position = { x: this.ship.x, y: CANVAS_HEIGHT };
+                position = { x: this.ship.x, y: CANVAS_HEIGHT + 20 };
                 break;
             case Sides.Left:
-                position = { x: 0, y: this.ship.y };
+                position = { x: -20, y: this.ship.y };
                 break;
         }
 

@@ -16,7 +16,7 @@ const PHONE_TOLERANCE: number = 5;
 const WIDTH: number = 65;
 const HEIGHT: number = 17;
 const BEAM_SPEED: number = 4;
-const SAUCER_SPEED: number = 5;
+const SAUCER_SPEED: number = 6;
 
 export class Saucer extends lib.Saucer {
 

@@ -14,6 +14,7 @@
     "@types/easeljs": "^0.8.35",
     "@types/greensock": "^1.15.30",
     "@types/jquery": "^2.0.34",
+    "@types/soundjs": "^0.6.27",
     "source-map-loader": "^0.1.5",
     "ts-loader": "^1.2.1",
     "typescript": "^2.0.10",

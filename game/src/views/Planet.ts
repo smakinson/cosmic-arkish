@@ -203,7 +203,19 @@ export class Planet extends lib.Planet {
     }
 
     private handleShipDestroyed(): void {
+
         this.warnTween.kill();
+
+        if (this.beastLeftCaptured) {
+            this.beastLeft.releaseFromCapture();
+            this.beastLeftCaptured = false;
+        }
+
+        if (this.beastRightCaptured) {
+            this.beastRight.releaseFromCapture();
+            this.beastRightCaptured = false;
+        }
+
         this.destroySaucer();
     }
 
